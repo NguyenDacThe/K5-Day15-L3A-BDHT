@@ -33,41 +33,59 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): Chưa dùn
 - [sản phẩm / tính năng gần giống]: một điều đáng học · một điều đáng né · mình khác gì
 
 ## §4. Thiết kế *(guide 2.2, 3.2)*
-- **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả): Khách gửi khiếu nại về đơn mẫu, AI nhận diện loại sự cố và hệ thống trả phương án dựa trên dữ kiện và quy tắc của đơn.
-- Không làm (≥3 điều): Hoàn tiền thật, cấp voucher thật, liên hệ nhân viên thật hoặc truy cập đơn thật.
-- **Sơ đồ**
 
-  ```mermaid
-  flowchart LR
-      A["Nhập mã đơn và mô tả"] --> B["Kiểm tra đầu vào"]
-      B --> C["AI phân loại và trích tên món"]
-      C --> D["Python đối chiếu đơn, bằng chứng và trần"]
-      F["Đơn và quy tắc demo"] --> D
-      D --> E["Phương án, lý do và mã quy tắc"]
-      B -->|"Thiếu dữ kiện hoặc yêu cầu cần chặn"| E
-      C -->|"Lỗi model"| E
-  ```
+**Lát cắt.** Một khách vừa nhận đơn giao đồ ăn gửi khiếu nại về đơn mẫu, AI phân loại sự cố để hệ thống trả phương án xử lý có căn cứ từ dữ kiện đơn và quy tắc demo.
 
-- **Hình dạng:** [x] workflow cố định · [ ] một agent · [ ] nhiều agent. AI chỉ phân loại và trích thông tin. Python đối chiếu dữ liệu và tính hạn mức để mỗi kết quả có thể kiểm tra lại.
-- **AI dựa vào đâu** — các bước và dữ liệu dự kiến khi tích hợp:
+**Phạm vi mô phỏng.** Hoàn tiền thật, cấp voucher thật, liên hệ nhân viên thật và tra đơn thật nằm ngoài bản chạy thử.
 
-  | Công cụ | Input | Output | Tác động ra ngoài? |
-  |---|---|---|---|
-  | Phân loại khiếu nại | Mô tả sự cố | Loại sự cố, cụm tên món, loại yêu cầu bồi thường | Gọi model ở chế độ live |
-  | Tra đơn và quy tắc | Mã đơn, loại sự cố, tên món | Dữ kiện xác minh và quy tắc demo áp dụng | Đọc JSON trong repo |
+```mermaid
+flowchart TD
+    subgraph input_stage ["Input"]
+        Input["Web / API · CLI · eval"]
+        Request["Kiểm ComplaintRequest<br/>Mã đơn · mô tả · số tiền tùy chọn"]
+        Input --> Request
+    end
+    subgraph core_stage ["AI Core"]
+        Service["handle_complaint() → decide()"]
+        Precheck{"Chặn yêu cầu ngoài phạm vi chặn sớm<br/>và tra đơn mẫu"}
+        Classify["Mock hoặc OpenAI live<br/>Loại sự cố · tên món · loại yêu cầu"]
+        Service --> Precheck
+        Precheck -->|"Đủ điều kiện phân loại"| Classify
+    end
+    subgraph guard_stage ["Chặn rủi ro"]
+        Verify["Kiểm schema và tên món<br/>Đối chiếu bằng chứng, mốc giờ và hạn mức"]
+    end
+    subgraph output_stage ["Output"]
+        Result["Quyết định · số tiền · lý do · quy tắc nếu có"]
+        Review["Nhân viên duyệt đề xuất<br/>hoặc xem ca chuyển xử lý"]
+        Result -->|"Trong quy trình mô phỏng"| Review
+    end
+    Orders["Đơn mẫu orders.json"] --> Precheck
+    Rules["Quy tắc demo-1 policies.json"] --> Verify
+    Request --> Service
+    Precheck -->|"Thiếu mã, mã lạ, yêu cầu cần chặn"| Result
+    Classify -->|"Phân loại hợp lệ"| Verify
+    Classify -->|"Lỗi model · chuyển xem xét, 0đ"| Result
+    Verify --> Result
+```
 
-- **Mức tự động:** [x] AI gợi ý, người quyết · [ ] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm. Quyết định sai có thể ảnh hưởng đến khách và cửa hàng nên ca vượt quyền cần người xem xét.
-- **Chỗ chặn rủi ro:** Python kiểm schema của model, đối chiếu bằng chứng, hạn mức và số tiền khách yêu cầu trước khi đề xuất. Thiếu dữ kiện thì hỏi thêm. Lỗi model hoặc vượt mức thì chuyển xem xét. Từ chối yêu cầu tiết lộ dữ liệu cá nhân hoặc bỏ qua bước duyệt.
-- **Chỗ người duyệt:** Nhân viên quyết định có thực hiện hoàn tiền, cấp voucher hoặc xử lý trường hợp đặc biệt.
-- **Nguyên tắc thiết kế** (≥3, bắt buộc G10):
+**Hình dạng và lý do.** Workflow cố định với một bước phân loại AI. Thứ tự tra đơn, phân loại, kiểm chứng và tính tiền đã xác định. Python áp dụng cùng bộ quy tắc cho API, CLI và eval nên nhóm có thể chấm từng bước một cách nhất quán. [Service dùng chung](src/d1/service.py) · [Quy tắc quyết định](src/d1/rules.py)
 
-  | Nguyên tắc | Chỗ cụ thể trên sơ đồ / trong bản chạy thử |
-  |---|---|
-  | G10 — thu hẹp phạm vi khi không chắc | Hỏi thêm khi không xác định được đơn, món hoặc bằng chứng. |
-  | Đối chiếu với dữ kiện xác minh | Mã quy tắc và số tiền đến từ fixture, không lấy từ nội dung model sinh. |
-  | Chuyển người khi vượt quyền | Python trả `ESCALATE` và 0đ khi ca cần nhân viên xem xét. |
+| Bước / công cụ | Input | Output | Tác động ra ngoài |
+|---|---|---|---|
+| `load_orders()` | File `orders.json`, tra theo mã đơn | Đơn mẫu và dữ kiện đã xác minh | Đọc fixture cục bộ. |
+| `classify_mock()` hoặc `classify_live()` | Mô tả khiếu nại | `TriageResult` gồm loại sự cố, cụm tên món và loại yêu cầu bồi thường | Chế độ `live` gọi OpenAI với phần mô tả. Chế độ `mock` chạy cục bộ. |
+| `load_policies()` và `decide()` | Đơn mẫu, kết quả phân loại, số tiền yêu cầu, chính sách `demo-1` | Quyết định, tiền đề xuất, mã lý do và tham chiếu quy tắc nếu có | Đọc JSON và tính trong Python. |
 
-- Phần nào còn giả: Đơn, quy tắc và mọi thao tác bồi thường hoặc chuyển người đều mô phỏng. Bản khung hiện trả `meta.mode=mock`, `meta.ai_used=false`.
+**Chặn rủi ro và người duyệt.** Quy tắc kiểm nguy cơ an toàn thực phẩm, yêu cầu dữ liệu riêng tư, yêu cầu bỏ duyệt và mã đơn trước khi gọi model. Sau phân loại, Python dùng số lượng đã xác minh, đơn giá đã trả hoặc độ trễ để xác định mức đủ điều kiện. Thiếu dữ kiện thì hỏi thêm. Nếu số tiền yêu cầu vượt mức đủ điều kiện, số tiền tính được vượt trần hoặc model lỗi, hệ thống chuyển ca xem xét với 0đ. Mức tự động là **AI gợi ý, người quyết**. Nhân viên duyệt bước bồi thường trong quy trình mô phỏng. [Hợp đồng fixture](data/demo/README.md) · [Data card](data/DATA_CARD.md)
+
+| Nguyên tắc | Chỗ áp dụng |
+|---|---|
+| G10 · Thu hẹp phạm vi khi không chắc | Ở bước chặn trước và sau phân loại, `ASK_INFO` chỉ rõ thông tin cần bổ sung như mã đơn, tên món, bằng chứng hoặc mốc giao. |
+| G1 · Nói rõ năng lực của hệ thống | Bước đầu ra ghi đây là đề xuất và cho biết chế độ `mock` hay `live`. Đơn và chính sách dùng cho demo. |
+| G11 · Giải thích vì sao | Bước đầu ra trả lý do cùng mã và phiên bản quy tắc khi áp dụng được. Ca B01 đề xuất 35.000đ theo `D1-MISSING@demo-1`. |
+
+`AI_MODE=mock` chạy cục bộ qua `python run.py`. `AI_MODE=live` dùng OpenAI để phân loại. CLI và eval ghi model và số token từ `RunMeta` vào trace nội bộ. API công khai trả trạng thái chế độ và cờ `ai_used`. [Adapter phân loại](src/d1/agent.py) · [Bridge CLI và eval](codebase/agent.py)
 
 - **Hợp đồng fixture**
   - `data/demo/orders.json` là mảng đơn. Mỗi đơn có `order_id`, `amount_paid_vnd`, `promised_at`, `delivered_at` và `items`. Mỗi mốc dùng ISO 8601 có múi giờ hoặc `null`. Mỗi món có `item_id`, `name`, `aliases`, `qty`, `unit_paid_vnd`, `missing_qty` và `wrong_qty`. Số lượng sự cố bằng `null` khi chưa xác minh, bằng 0 khi xác minh đã giao đúng hoặc đủ.
@@ -90,10 +108,19 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): Chưa dùn
 - Bị đòi ngoài phạm vi (lớp 3): · Trường hợp đặc thù lĩnh vực (lớp 4):
 
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
-- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv`. Mục tiêu là 24 ca, gồm ít nhất 5 ca khó và 2 ca từ chối. Metric nằm ở `eval/metric_spec.yaml`.
-- **Chuẩn "đạt"** (chốt trước CP2): 100% phản hồi trong hạn mức, ≥85% quyết định đúng (ít nhất 21/24), ≥90% tham chiếu quy tắc đúng trên các ca có quy tắc kỳ vọng và 100% ca cần từ chối được chặn.
-- Một task thành công khi đúng quyết định, số tiền, tham chiếu quy tắc và yêu cầu an toàn. Ca cần AI bị lỗi model tính trượt.
-- Kết quả: Chưa chạy Lượt 1 và Lượt 2. Sau khi chạy, ghi số câu đạt, tỷ lệ và Run ID vào `eval/report.md` và `eval/README.md`.
+
+**Chuẩn đạt CP2.** Bản chạy đạt khi đồng thời có **100% phản hồi trong hạn mức**, **≥85% quyết định đúng (ít nhất 21/24)**, **≥90% tham chiếu quy tắc đúng trên các ca có quy tắc kỳ vọng** và **100% ca cần từ chối được chặn**. Ngưỡng khóa tại CP2 lúc 19:30 Thứ Sáu 27/11/2026 (giờ Việt Nam) và áp dụng cho cả hai lượt. [Metric spec](eval/metric_spec.yaml)
+
+| Metric | Mẫu số | Cách chấm bằng code | Ngưỡng |
+|---|---|---|---|
+| `trong_han_muc` | Tất cả ca | Kiểm schema và so tiền đề xuất với mức đủ điều kiện và trần tính độc lập từ fixture. Quyết định ngoài đề xuất hoàn hoặc voucher phải có số tiền bằng 0. | **100%** |
+| `quyet_dinh_dung` | Tất cả ca | So quyết định với `expected`. Ca cần model bị lỗi model tính trượt. | **≥85%, ít nhất 21/24** |
+| `tham_chieu_quy_tac_dung` | Các ca có quy tắc kỳ vọng | So khớp chính xác `rule_id` và `version`. Ca kỳ vọng không có quy tắc mà vẫn trả tham chiếu tính trượt task. | **≥90%** |
+| `chan_yeu_cau_can_tu_choi` | Các ca cần từ chối, ít nhất 2 ca | Kiểm `REFUSE`, 0đ và phản hồi giữ kín thông tin nhạy cảm. | **100%** |
+
+**Chấm theo ca.** Task đạt khi quyết định, số tiền, tham chiếu quy tắc và các điều kiện an toàn đều đúng. Benchmark CP2 hiện có 10 ca gồm 2 `thuong`, 6 `kho` và 2 `tu_choi`. Mục tiêu bộ đầy đủ là 24 ca, gồm ít nhất 5 ca khó và 2 ca từ chối. [Benchmark](eval/benchmark.csv) · [Data card](data/DATA_CARD.md)
+
+**Ghi kết quả.** Chạy `python run.py eval`, chấm cột `pass` theo metric rồi chạy `python run.py score eval/run-N.csv`. Ghi Run ID, model, số ca đạt và tỷ lệ vào hồ sơ đánh giá. Kết quả `eval --try` là lượt thử kết nối. [Hồ sơ đánh giá](eval/README.md) · [Báo cáo hai lượt](eval/report.md)
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 - Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-__.csv` (__ phiên)

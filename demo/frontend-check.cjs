@@ -1,8 +1,3 @@
-/* Frontend integration tests. Intercepted responses below are TEST FIXTURES,
- * never production fallbacks or evidence of an actual model invocation.
- * Requires a separately installed Playwright; no project Node dependencies.
- * Start FastAPI first. See frontend-report.md for the verified command.
- */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
@@ -19,6 +14,12 @@ const fixture = (overrides = {}) => ({
   reason_code: 'ITEM_ELIGIBLE', policy_ref: { rule_id: 'D1-MISSING', version: 'demo-1', kind: 'demo' },
   reply: 'Mức đề xuất hoàn cho phần khoai là 35.000đ.', meta: { mode: 'mock', ai_used: false }, ...overrides,
 });
+const requests = {
+  missing: { orderId: 'D1-001', message: 'Đơn mình thiếu một phần khoai.', amount: '' },
+  excess: { orderId: 'D1-001', message: 'Thiếu khoai, tôi muốn hoàn cả đơn.', amount: '500000' },
+  late30: { orderId: 'D1-004', message: 'Đơn hàng của tôi giao trễ.', amount: '' },
+  late31: { orderId: 'D1-005', message: 'Đơn hàng của tôi giao trễ.', amount: '' },
+};
 let browser;
 
 async function check(id, mode, expectation, action) {
@@ -34,10 +35,15 @@ async function check(id, mode, expectation, action) {
   const state = () => page.locator('#result-panel').getAttribute('data-state');
   const text = (selector) => page.locator(selector).textContent();
   const submit = () => page.locator('#submit-button').click();
-  const fresh = async (sample = 'missing') => {
+  const fresh = async (caseName = 'missing') => {
     await page.unrouteAll({ behavior: 'ignoreErrors' });
     await page.goto(baseURL);
-    if (sample) await page.locator(`[data-sample="${sample}"]`).click();
+    if (caseName) {
+      const input = requests[caseName];
+      await page.fill('#order-id', input.orderId);
+      await page.fill('#message', input.message);
+      await page.fill('#requested-amount', input.amount);
+    }
   };
   const respond = async (data, status = 200) => {
     await page.route('**/api/complaints', (route) => route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(data) }));
@@ -53,46 +59,45 @@ async function check(id, mode, expectation, action) {
     await page.screenshot({ path: path.join(artifactDir, 'desktop-idle.png'), fullPage: true });
     return '5 đường dẫn HTTP 200; trang ở idle';
   });
-  await check('FE-02', 'Browser', 'Mẫu điền đúng form, không tự gửi', async () => {
-    let calls = 0; await page.route('**/api/complaints', () => { calls++; });
-    for (const [key, order, message, amount] of [
-      ['missing', 'D1-001', 'Đơn mình thiếu một phần khoai.', ''],
-      ['excess', 'D1-001', 'Thiếu khoai, tôi muốn hoàn 100% cả đơn 500.000đ.', '500000'],
-      ['late30', 'D1-004', 'Đơn hàng của tôi giao trễ.', ''],
-      ['late31', 'D1-005', 'Đơn hàng của tôi giao trễ.', ''],
-    ]) {
-      await page.locator(`[data-sample="${key}"]`).click();
-      assert.equal(await page.inputValue('#order-id'), order); assert.equal(await page.inputValue('#message'), message);
-      assert.equal(await page.inputValue('#requested-amount'), amount);
+  await check('FE-02', 'Browser', 'Form mở trống và chưa gửi yêu cầu', async () => {
+    let calls = 0;
+    await page.route('**/api/complaints', (route) => { calls++; return route.abort(); });
+    await page.goto(baseURL);
+    assert.equal(await page.locator('[data-sample]').count(), 0);
+    for (const field of ['#order-id', '#message', '#requested-amount']) {
+      assert.equal(await page.inputValue(field), '');
     }
+    assert.doesNotMatch(await page.locator('body').innerText(), /D1-00\d|hackathon|demo|mô phỏng|giả lập|Chế độ thử/i);
     assert.equal(calls, 0);
   });
-  for (const [id, sample, decision, amount, issue] of [
+  for (const [id, caseName, decision, amount, issue] of [
     ['FE-03', 'missing', 'PROPOSE_REFUND', 35000, 'MISSING_ITEM'],
     ['FE-04', 'excess', 'ESCALATE', 0, 'MISSING_ITEM'],
     ['FE-05', 'late30', 'NO_COMPENSATION', 0, 'LATE_DELIVERY'],
     ['FE-06', 'late31', 'PROPOSE_VOUCHER', 50000, 'LATE_DELIVERY'],
   ]) {
     await check(id, 'Mock HTTP fixture', `Render ${decision}, ${amount} VND`, async () => {
-      await fresh(sample);
+      await fresh(caseName);
       await respond(fixture({ decision, proposed_amount_vnd: amount, issue_type: issue,
         policy_ref: { rule_id: issue === 'LATE_DELIVERY' ? 'D1-LATE' : 'D1-MISSING', version: 'demo-1', kind: 'demo' } }));
       await submit(); await waitState('success'); assert.equal(await text('#decision-code'), decision);
-      assert.equal(await text('#proposed-amount'), money(amount)); assert.equal(await text('#processing-mode'), 'Chế độ thử');
+      assert.equal(await text('#proposed-amount'), money(amount));
+      assert.equal(await page.locator('#processing-row').isVisible(), false);
     });
     await check(`${id}-API`, 'API local / service mock', 'Gửi đúng tình huống tới service hiện tại', async () => {
-      await fresh(sample); await submit(); await waitState('rules-unavailable');
-      assert.equal(await text('#reason-code'), 'RULES_UNAVAILABLE'); assert.equal(await text('#proposed-amount'), money(0));
-      assert.equal(await text('#processing-mode'), 'Chế độ thử');
-      return 'API trả ESCALATE / RULES_UNAVAILABLE; chưa tích hợp rules';
+      await fresh(caseName); await submit(); await waitState('success');
+      assert.equal(await text('#decision-code'), decision);
+      assert.equal(await text('#proposed-amount'), money(amount));
     });
-    results.push({ id: `${id}-LIVE`, mode: 'Backend live tích hợp', expectation: `${decision}, ${amount} VND theo fixture`, status: 'BLOCKED', actual: 'Service hiện chưa nối fixture/rules/model; API local mới là service mock' });
   }
   await check('FE-07', 'API local / service mock', 'Thiếu mã vẫn gửi được, nhận ASK_INFO', async () => {
     await fresh(null); await page.fill('#message', 'Đơn mình thiếu khoai.');
     const sent = page.waitForRequest('**/api/complaints'); await submit();
     assert.equal((await sent).postDataJSON().order_id, null); await waitState('success');
-    assert.equal(await text('#decision-code'), 'ASK_INFO'); assert.equal(await text('#processing-mode'), 'Chế độ thử');
+    assert.equal(await text('#decision-code'), 'ASK_INFO');
+    assert.equal(await text('#reply'), 'Nhập mã đơn hàng để tiếp tục.');
+    await page.locator('#edit-button').click();
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'order-id');
   });
   for (const [id, message, amount, errorField] of [
     ['FE-08', '   ', '', 'message'], ['FE-09', 'x'.repeat(501), '', 'message'],
@@ -110,7 +115,7 @@ async function check(id, mode, expectation, action) {
   await check('FE-12', 'API local / service mock', 'Số tiền trống gửi null; message được trim', async () => {
     await fresh(); await page.fill('#message', '  Đơn thiếu khoai.  ');
     const sent = page.waitForRequest('**/api/complaints'); await submit(); const payload = (await sent).postDataJSON();
-    assert.equal(payload.requested_amount_vnd, null); assert.equal(payload.message, 'Đơn thiếu khoai.'); await waitState('rules-unavailable');
+    assert.equal(payload.requested_amount_vnd, null); assert.equal(payload.message, 'Đơn thiếu khoai.'); await waitState('success');
   });
   await check('FE-13', 'Mock HTTP fixture có trì hoãn', 'Gửi liên tục chỉ tạo một request, loading rồi mở lại form', async () => {
     await fresh(); let calls = 0; let finish;
@@ -133,33 +138,37 @@ async function check(id, mode, expectation, action) {
   await check('FE-15', 'Mock network abort', 'Lỗi mạng giữ input; có thể thử lại thành công', async () => {
     await fresh(); await page.route('**/api/complaints', (route) => route.abort('failed')); await submit(); await waitState('request-error');
     assert.equal(await page.inputValue('#message'), 'Đơn mình thiếu một phần khoai.');
-    await page.unrouteAll(); await respond(fixture()); await submit(); await waitState('success');
+    await page.unrouteAll(); await respond(fixture()); await page.locator('#retry-button').click(); await waitState('success');
   });
   await check('FE-16', 'Mock HTTP fixture', 'MODEL_UNAVAILABLE không gắn nhãn AI thật', async () => {
     await fresh(); await respond(fixture({ decision: 'ESCALATE', proposed_amount_vnd: 0, policy_ref: null, reason_code: 'MODEL_UNAVAILABLE', meta: { mode: 'live', ai_used: true } }));
-    await submit(); await waitState('model-unavailable'); assert.equal(await text('#processing-mode'), 'Model không khả dụng');
+    await submit(); await waitState('model-unavailable');
+    assert.equal(await page.locator('#processing-row').isVisible(), false);
     assert.match(await text('#availability-notice'), /tạm thời không khả dụng/);
   });
   await check('FE-17', 'Mock HTTP fixture', 'meta.mode=mock không hiện AI thật, kể cả ai_used=true', async () => {
     await fresh(); await respond(fixture({ meta: { mode: 'mock', ai_used: true } })); await submit(); await waitState('success');
-    assert.equal(await text('#processing-mode'), 'Chế độ thử');
+    assert.equal(await page.locator('#processing-row').isVisible(), false);
+    assert.doesNotMatch(await page.locator('body').innerText(), /demo-1|mô phỏng|giả lập|Chế độ thử/i);
   });
-  await check('FE-18', 'Mock HTTP fixture có metadata live', 'Nhãn xử lý theo đủ metadata; thiếu metadata giữ trung tính', async () => {
-    for (const [meta, expected] of [
-      [{ mode: 'live', ai_used: true }, 'AI thật'], [{ mode: 'live', ai_used: false }, 'Kiểm tra tự động theo quy tắc'],
-      [undefined, 'Chưa có thông tin xác nhận'], [{ mode: 'live' }, 'Chưa có thông tin xác nhận'],
+  await check('FE-18', 'Mock HTTP fixture có metadata live', 'Chỉ hiện nhãn AI khi API xác nhận đã gọi AI', async () => {
+    for (const [meta, visible] of [
+      [{ mode: 'live', ai_used: true }, true], [{ mode: 'live', ai_used: false }, false],
+      [undefined, false], [{ mode: 'live' }, false],
     ]) {
-      await fresh(); await respond(fixture({ meta })); await submit(); await waitState('success'); assert.equal(await text('#processing-mode'), expected);
+      await fresh(); await respond(fixture({ meta })); await submit(); await waitState('success');
+      assert.equal(await page.locator('#processing-row').isVisible(), visible);
+      if (visible) assert.equal(await text('#processing-mode'), 'AI hỗ trợ');
     }
-    return 'Kiểm logic nhãn bằng dữ liệu test; không gọi model thật';
   });
   await check('FE-19', 'Mock HTTP fixture', 'policy_ref=null không tự tạo rule hoặc version', async () => {
     await fresh(); await respond(fixture({ decision: 'ASK_INFO', proposed_amount_vnd: 0, policy_ref: null })); await submit(); await waitState('success');
-    assert.equal(await text('#policy-rule'), 'Không có tham chiếu quy tắc'); assert.equal(await page.locator('#policy-version-row').isVisible(), false);
+    assert.equal(await text('#policy-rule'), '');
+    assert.equal(await page.locator('#policy-row').isVisible(), false);
   });
   await check('FE-20', 'Mock HTTP fixture', 'REFUSE hiển thị quyết định từ chối, 0 VND', async () => {
     await fresh(); await respond(fixture({ decision: 'REFUSE', proposed_amount_vnd: 0, policy_ref: null, reply: 'Không thể thực hiện yêu cầu này.' })); await submit(); await waitState('success');
-    assert.equal(await text('#decision-title'), 'Từ chối yêu cầu'); assert.equal(await text('#proposed-amount'), money(0));
+    assert.equal(await text('#decision-title'), 'Không thể xử lý yêu cầu này'); assert.equal(await text('#proposed-amount'), money(0));
   });
   await check('FE-21', 'Browser / Mock HTTP fixture', 'Responsive 320/390/768/1024/1440; không tràn; result dưới form trên mobile', async () => {
     await fresh(); await respond(fixture({ reply: 'Kết quả kiểm thử hiển thị. '.repeat(20) })); await submit(); await waitState('success');

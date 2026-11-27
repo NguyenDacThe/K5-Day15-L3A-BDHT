@@ -11,17 +11,17 @@ Chưa quay hoặc xuất bản video. Chỉ điền SHA của bản thực sự 
 
 - Thể cung cấp URL Preview/Production, SHA, model đã gọi thành công và một response `meta.mode=live`, `meta.ai_used=true`.
 - Gia Bảo và Hùng xác nhận fixture/quy tắc đã tích hợp: D1-001 thiếu khoai 35.000đ, vượt mức chuyển xem xét 0đ, D1-004 trễ 30 phút chưa bồi thường, D1-005 trễ 31 phút đề xuất voucher 50.000đ.
-- Bản service hiện tại chỉ trả `ASK_INFO` hoặc `ESCALATE / RULES_UNAVAILABLE`, `meta.mode=mock`. Video từ bản này phải ghi là demo giao diện/chế độ thử; chưa đáp ứng video gọi model thật.
+- Xác minh phản hồi meta.mode=live, meta.ai_used=true trên URL thực sự dùng để quay.
 - Response bị chặn trong kiểm thử trình duyệt chỉ là dữ liệu test, kể cả khi chứa metadata live. Không dùng làm bằng chứng gọi model thật.
 
 ## Kịch bản video gọi model thật · 30 giây
 
 | Thời gian | Thao tác / hình ảnh | Lời dẫn gợi ý |
 |---|---|---|
-| 0–5 giây | Mở URL live đã xác minh, giữ thông báo mô phỏng trong khung hình. | “Đây là BDHT Food Support, bản thử nghiệm cho khiếu nại đơn giao đồ ăn.” |
-| 5–15 giây | Chọn “Thiếu món”, cho thấy D1-001 và mô tả, bấm “Kiểm tra phương án”. | “Khách chọn đơn mẫu và mô tả phần khoai bị thiếu.” |
-| 15–25 giây | Chờ API; chỉ khi kết quả thật tới mới chỉ vào 35.000đ, D1-MISSING/demo-1 và nhãn AI thật. | “AI hiểu sự cố; Python đối chiếu dữ liệu đã xác minh và trả mức đề xuất.” |
-| 25–30 giây | Giữ màn kết quả và nhãn mô phỏng. | “Đây là đề xuất hoàn phần bị ảnh hưởng. Chưa thực hiện chi trả.” |
+| 0–5 giây | Mở URL live đã xác minh, giữ tiêu đề Hỗ trợ đơn hàng trong khung hình. | “Đây là BDHT Food Support, bản thử nghiệm cho khiếu nại đơn giao đồ ăn.” |
+| 5–15 giây | Nhập D1-001 và mô tả thiếu khoai, bấm “Kiểm tra phương án”. | “Khách nhập mã đơn và mô tả phần khoai bị thiếu.” |
+| 15–25 giây | Chờ API; chỉ khi kết quả thật tới mới chỉ vào 35.000đ, D1-MISSING và nhãn AI hỗ trợ. | “AI hiểu sự cố; Python đối chiếu dữ liệu đã xác minh và trả mức đề xuất.” |
+| 25–30 giây | Giữ màn kết quả và dòng giới hạn sử dụng. | “Đây là đề xuất hoàn phần bị ảnh hưởng. Chưa thực hiện chi trả.” |
 
 Không cắt ghép một response mock thành lượt gọi AI thành công. Nếu model lỗi hoặc số tiền không như kỳ vọng, dừng quay, ghi lỗi và nhờ chủ Backend kiểm tra trước khi thử lại.
 
@@ -29,7 +29,7 @@ Không cắt ghép một response mock thành lượt gọi AI thành công. N�
 
 Quay trên cùng build đã dùng Lượt 2; nếu khác, ghi rõ SHA và giới hạn so sánh.
 
-1. Hiện URL, build được quay và thông báo giả lập.
+1. Hiện URL và build được quay. Nêu rõ các ca trong video dùng đơn thử nghiệm.
 2. Thiếu khoai D1-001 → đề xuất 35.000đ; trình bày rule và phương thức xử lý thực tế.
 3. Yêu cầu cả đơn 500.000đ → cần nhân viên xem xét, 0đ; việc chuyển người là mô phỏng.
 4. D1-004 rồi D1-005 → so sánh kết quả ở biên 30/31 phút. UI chỉ hiển thị response Backend.

@@ -27,18 +27,18 @@ Repo public chỉ chứa fixture giả lập, nhật ký nguồn và đoạn tr�
 
 **Data `synthetic`:** viết tay với hỗ trợ của AI, không dùng seed ngẫu nhiên. Người kiểm: Gia Bảo rà tay 9/9 đơn. Hùng đối chiếu lại khi chốt ground truth benchmark. Data tự dựng **không phải bằng chứng pain**.
 
-## Dataset 2 · Review công khai ShopeeFood trên Google Play và App Store Việt Nam
+## Dataset 2 · Review công khai ShopeeFood trên Google Play Việt Nam
 
 | | |
 |---|---|
-| Dùng để làm gì | Đào bằng chứng pain của khách khi khiếu nại đơn giao đồ ăn (thiếu món, sai món, giao trễ, hoàn tiền, CSKH). Kết quả ở `evidence/summary.md`. |
-| Từ đâu | Google Play VN, package `com.deliverynow` ([trang app](https://play.google.com/store/apps/details?id=com.deliverynow&hl=vi)). App Store VN, ID `1137866760` ([trang app](https://apps.apple.com/vn/app/shopeefood-food-delivery/id1137866760)). |
-| Cách thu | Google Play: `google-play-scraper` chạy local (`lang="vi"`, `country="vn"`), chạy thành công; đối chiếu 3/3 review đang hiện trên trang chính thức đều có trong dữ liệu thu. App Store: đọc tay mục Xếp hạng & Nhận xét trên trang web; thử RSS công khai sắp mới nhất của Apple nhưng nhận 0 review. Chi tiết cỡ mẫu, từ khóa, quy tắc gắn nhãn và mẫu số ở `evidence/data-mining.md` §1. Thiếu ≥5 trích dẫn đến 17:00 27/11 thì phỏng vấn ≥3 người ngoài nhóm. Phương thức thật đã dùng ghi ở `evidence/source_log.csv`. |
-| Xử lý những bước gì | Lọc theo cụm "thiếu món", "sai món", "giao trễ", "hoàn tiền", "bồi thường", "khiếu nại", "CSKH" và cách nói tương đương. Bỏ review trùng. Đọc tay để xác nhận review nói về sự cố giao đồ ăn hoặc luồng hỗ trợ. Ẩn danh: bỏ tên, tài khoản, số điện thoại, địa chỉ, mã đơn; phần cần che trong câu ghi `[đã ẩn]`. Mỗi trích dẫn có mã nội bộ `R01`…, tháng review, ngày thu, số sao. Cách đếm viết trước ở `evidence/data-mining.md` §1. Nhãn tay đã ẩn danh (không có nội dung gốc) ở `evidence/review_labels.csv`, đếm lại bằng `scripts/data/count_evidence.py`. |
-| Số dòng | Kế hoạch mẫu (chốt 12:43 27/11/2026): Google Play thu ~600 review mới nhất, đọc tay 30 review mới nhất khớp từ khóa; App Store đọc tay 10–20 review gần nhất. Giữ ≥5 trích dẫn. Số thực tế: Google Play thu 600 review, bỏ 189 trùng còn 411, 43/411 khớp từ khóa, đọc tay 30; App Store đọc tay 10 (trang công khai chỉ hiện 10). Tổng đọc tay 40, 17 nói về sự cố đơn, 8/17 nhắc khó khiếu nại, 9 trích dẫn dùng được. |
-| Phiên bản / ngày lấy | Thu ngày 27/11/2026. Cửa sổ review: Google Play 08/10–26/11/2026; App Store 11/2018–04/2021. |
+| Dùng để làm gì | Đào bằng chứng pain của khách khi đơn giao đồ ăn bị thiếu món, sai món hoặc giao trễ (đúng tình huống đề D1) và khi khiếu nại. Kết quả ở `evidence/summary.md`. |
+| Từ đâu | Google Play VN, package `com.deliverynow` ([trang app](https://play.google.com/store/apps/details?id=com.deliverynow&hl=vi)). |
+| Cách thu | Google Play: `scripts/data/collect_gplay.py` chạy local (`google-play-scraper`, `lang="vi"`, `country="vn"`), thu 5.000 review mới nhất + 1.000 review liên quan nhất + 3.000 review 1★ + 1.174 review 2★ mới nhất (đặt 1.500, Google Play chỉ trả 1.174). Lần thu 1 (600 review mới nhất) bị thay vì lệch đề D1; lý do và các nguồn đã thử ở `evidence/data-mining.md` §1. Phương thức ghi ở `evidence/source_log.csv`. |
+| Xử lý những bước gì | Bỏ trùng theo mã review và nội dung. Lọc theo tình huống lõi D1 bằng biểu thức trong script: thiếu món, sai món, giao trễ; gắn thêm thẻ tình huống khó trên thẻ đề (bồi thường, đòi hoàn cả đơn, khiếu nại, khiếu nại nhiều lần, dọa 1 sao). Chọn mẫu đọc tay 40 review: tối đa 15 thiếu món, 10 sai món, còn lại giao trễ. Gắn nhãn tay theo `evidence/data-mining.md` §1. Ẩn danh: bỏ tên, tài khoản, số điện thoại, địa chỉ, mã đơn; phần cần che ghi `[đã ẩn]`. Nhãn đã ẩn danh (không có nội dung gốc) ở `evidence/review_labels.csv`, đếm lại bằng `scripts/data/count_evidence.py`. |
+| Số dòng | Google Play: thu 10.174, bỏ 4.741 trùng còn 5.433; 687/5.433 khớp thiếu/sai/trễ (thiếu 32, sai 12, trễ 650); đọc tay 40; 31 sự cố D1; 13/31 nhắc khó khiếu nại; 14 trích dẫn dùng được. |
+| Phiên bản / ngày lấy | Thu ngày 27/11/2026 (~16:23). Cửa sổ review: 03/09/2016–26/11/2026; 35/40 review mẫu thuộc năm 2026. |
 | Nhãn | Thật (dữ liệu công khai, đã ẩn danh). |
-| Giới hạn | Review store lệch về đánh giá thấp và người có trải nghiệm xấu, không đại diện cho tỷ lệ sự cố thật. Không xác minh được đơn hay danh tính người viết. Mẫu nhỏ, lấy theo thời gian gần đây. App Store chỉ công khai 10 review cũ (2018–2021, thời app còn tên Now), RSS sắp mới nhất trả 0 review. Nhãn tay gắn nháp với hỗ trợ của AI, Gia Bảo rà lại. |
+| Giới hạn | Review thiếu/sai món hiếm (44/5.433), nên thu thêm review 1★/2★ để tìm; mẫu lệch mạnh về đánh giá thấp (38/40 là 1–2★), không đại diện cho tỷ lệ sự cố thật. Tỷ lệ theo loại có mẫu số nhỏ (7–12). Không xác minh được đơn hay người viết. Nhãn tay gắn nháp với hỗ trợ của AI, Gia Bảo rà lại. |
 
 ## Dataset 3 · Trang quy trình khiếu nại của ShopeeFood (tham chiếu)
 

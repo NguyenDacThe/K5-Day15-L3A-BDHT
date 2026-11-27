@@ -1,12 +1,12 @@
 """Đếm bằng chứng từ file nhãn review (cách đếm ở evidence/data-mining.md §1).
 
-    python scripts/data/count_evidence.py data/raw/review_sample.csv --export
+    python scripts/data/count_evidence.py data/raw/review_sample_d1.csv --export
         đếm từ file đã gắn nhãn tay và ghi evidence/review_labels.csv (không có nội dung review gốc)
     python scripts/data/count_evidence.py evidence/review_labels.csv
         người khác chạy lại từ file đã commit, ra cùng số
 
 Quy tắc gắn nhãn đầy đủ: evidence/data-mining.md §1. Ngưỡng giả thuyết (≥30%): evidence/hypothesis.md.
-Nhãn: su_co_don = y/n · loai_su_co = thieu_mon | sai_mon | giao_tre | hoan_tien | khac
+Nhãn (định nghĩa ở evidence/data-mining.md §1): su_co_don = y/n · loai_su_co = thieu_mon | sai_mon | giao_tre
       kho_khieu_nai = y/n (chỉ xét khi su_co_don = y) · trich_dan_an_danh = đoạn trích đã ẩn danh hoặc để trống
 """
 import csv

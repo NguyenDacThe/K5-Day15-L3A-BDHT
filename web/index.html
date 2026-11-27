@@ -66,13 +66,8 @@
           <div class="field-pair">
           <div class="field">
             <label for="order-id">Mã đơn hàng <span class="optional">Không bắt buộc</span></label>
-            <select id="order-id" name="order_id" aria-describedby="order-hint">
-              <option value="">Chưa có mã đơn hàng</option>
-              <option value="D1-001">D1-001 · Đơn mẫu thiếu món</option>
-              <option value="D1-004">D1-004 · Đơn mẫu giao trễ 30 phút</option>
-              <option value="D1-005">D1-005 · Đơn mẫu giao trễ 31 phút</option>
-            </select>
-            <p id="order-hint" class="field-hint">Bạn vẫn có thể tiếp tục nếu chưa có mã đơn.</p>
+            <input id="order-id" name="order_id" type="text" autocomplete="off" spellcheck="false" placeholder="Nhập mã đơn, ví dụ D1-001" aria-describedby="order-hint">
+            <p id="order-hint" class="field-hint">Nhập mã đơn hàng</p>
           </div>
           <div class="field">
             <label for="requested-amount">Số tiền yêu cầu <span class="optional">Không bắt buộc</span></label>

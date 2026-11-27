@@ -23,7 +23,11 @@ PRIVATE_DATA_REQUEST = re.compile(
     r"\b(?:so dien thoai|dia chi|thong tin ca nhan)\b"
 )
 BYPASS_REVIEW = re.compile(r"\b(?:bo qua|bo het|khong can)\s+(?:buoc\s+)?(?:kiem duyet|phe duyet|duyet)\b")
-FULL_REFUND = re.compile(r"\bhoan(?:\s+tien)?\s+(?:100\s*%|(?:toan bo|ca|nguyen)\s+don\b)")
+FULL_REFUND = re.compile(
+    r"\b(?:hoan(?:\s+lai)?|tra\s+lai)\s+(?:(?:so\s+)?tien\s+)?"
+    r"(?:100\s*%|(?:toan\s+bo|tat\s+ca|ca|nguyen|het|tron)\s+"
+    r"(?:(?:so\s+)?tien\s+(?:cua\s+)?)?(?:don\b|da\s+(?:tra|thanh\s+toan)\b))"
+)
 
 
 def _normalize(text: str) -> str:
@@ -109,7 +113,8 @@ def decide(request: ComplaintRequest, classify: Callable[[str], TriageResult]) -
         eligible = count * item.unit_paid_vnd
 
     requested = request.requested_amount_vnd or 0
-    if triage.demand_kind == DemandKind.FULL_ORDER or FULL_REFUND.search(message):
+    # Only a request stated by the customer can imply the entire order total.
+    if FULL_REFUND.search(message):
         requested = max(requested, order.amount_paid_vnd)
     elif triage.demand_kind == DemandKind.AMOUNT_MENTIONED and request.requested_amount_vnd is None:
         return _result(Decision.ASK_INFO, "REQUESTED_AMOUNT_REQUIRED", "Bạn xác nhận số tiền yêu cầu giúp mình.", issue, policy)

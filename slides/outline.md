@@ -1,23 +1,16 @@
-# Dàn slide → lấy số từ file nào
+# Lời dẫn thuyết trình D1
 
-> Làm ở guide bước 5.1. Luật: **không có bằng chứng thì không có slide** — mỗi trang ≥1 con số / trích dẫn có nguồn / kết quả đo.
-> Xuất PDF thành `demo-slides.pdf` ở thư mục gốc repo, nộp tại CP4 14:30 Thứ Bảy 28/11. Định dạng nào cũng được (PDF, PPTX, HTML…); hoặc nộp link slide (Drive, Canva, Google Slides…) ở form CP4, để ai có link cũng xem được.
+Mở [bản HTML](../demo-slides.html), dùng phím mũi tên để chuyển trang. [Bản PDF nộp CP4](../demo-slides.pdf) có 8 trang. Khớp bài nói khoảng 5 phút.
 
-| # | Trang | Có gì | Số lấy từ | Xong |
-|---|---|---|---|---|
-| 1 | Người dùng & pain | Ai · việc gì · chỗ đau + số và trích dẫn | `evidence/summary.md` | ☐ |
-| 2 | Vì sao chọn bài này | Bảng impact rút gọn + hướng bị loại | `spec.md` §2 | ☐ |
-| 3 | Giải pháp | Lát cắt một câu · sơ đồ · AI tự làm đến đâu, vì sao | `spec.md` §4 | ☐ |
-| 4 | Demo live | 1 trường hợp thường + 1 trường hợp khó (lấy từ bộ câu thử); mạng hỏng → video dự phòng | `eval/benchmark.csv` | ☐ |
-| 5 | **Đánh giá thế nào** | Dataset · bộ câu thử · metric · lượt 1 → lượt 2 so với chuẩn "đạt" (kèm run ID) · lỗi chính | `eval/README.md`, `eval/report.md` | ☐ |
-| 6 | **Chi phí khi dùng thật** | Chi phí / task thành công · 3 kịch bản · so với impact | `cost/cost-estimate.md` | ☐ |
-| 7 | Kết luận | Go / iterate / stop — dẫn số ở trang 1, 5, 6 | — | ☐ |
-| 8 | Nếu có thêm 1 tuần | 2–3 việc, trỏ về lỗi còn lại / phản hồi người dùng | `eval/report.md` mục 4 · `validation/log.md` | ☐ |
+| Trang | Người nói | Thời gian | Lời dẫn |
+|---|---|---:|---|
+| 1 | Gia Bảo | 40s | Đọc câu review. Giải thích 13/31 là số trong mẫu đọc tay có sự cố. Khách hỏi ai xử lý và cần cung cấp gì. |
+| 2 | Gia Bảo | 30s | Chọn thiếu/sai món vì vướng hỗ trợ nhiều trong mẫu. Giữ giao trễ làm ca đo biên. Nói rõ 2.400 phút là ước tính khối lượng, còn thời gian tiết kiệm cần đo. |
+| 3 | Thể | 35s | Mô tả một câu qua OpenAI rồi chỉ vào bước Python tra đơn và hạn mức. Cho biết khi thiếu dữ kiện thì hỏi thêm. |
+| 4 | Đông | 60s | Bấm Thiếu món rồi gửi để thấy 35.000đ và D1-MISSING. Bấm Yêu cầu vượt mức rồi gửi để thấy 0đ và cần người xem xét. Mở video dự phòng nếu bản live gián đoạn. |
+| 5 | Hùng | 45s | Kể một lỗi B15, sửa điều kiện dùng giá trị cả đơn rồi báo 23/24 → 24/24. Chỉ vào 24/24 trong hạn mức và 2/2 từ chối. |
+| 6 | Hùng | 35s | Nêu 50 phiên, GPT-4o mini, 0,000073 USD mỗi task thành công và chi phí tháng ở 300 khách. Dùng tỷ lệ đo 24/24 để giải thích công thức. |
+| 7 | Thể | 30s | Chốt thử nội bộ có người duyệt. Tách rõ mức đề xuất demo và phần bàn giao nhân viên cần tích hợp. |
+| 8 | Đông | 25s | Chốt bằng 3 việc trong tuần. Quan sát khách, thử thêm ca khó và xác minh nguồn dữ liệu trước khi mở rộng. |
 
-**Trước khi lên:** tải repo về một máy khác (hoặc thư mục mới), chạy theo mục "Chạy trong 3 phút" của `README.md` · `.env` có trên máy demo, đã gọi thử 1 câu trong vòng 1 giờ trước giờ demo · video dự phòng mở được bằng cửa sổ ẩn danh · biết bản chạy thử sẽ làm gì với **1 câu thử lạ** của giám khảo.
-
-Ai nói trang nào (mỗi người ≥1 phần):
-
-| Trang | Người nói |
-|---|---|
-| | |
+[Mốc đánh giá](../eval/report.md) · [Chi phí](../cost/cost-estimate.md) · [Bằng chứng](../evidence/summary.md)

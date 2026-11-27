@@ -144,6 +144,8 @@ Ca yêu cầu dữ liệu riêng hoặc bỏ duyệt nhận `REFUSE`. Ca vượt
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 
+**Số liệu CP4.** [Mô phỏng 50 phiên live](cost/cost-estimate.md) dùng tỷ lệ đạt 24/24 của `run-2@20261127-230130`. Với `gpt-4o-mini-2024-07-18`, chi phí đo được là **0,000073 USD/task thành công** và ước tính **0,0309 USD/tháng** ở 300 khách. Phần dưới là dự toán trước khi chạy mô phỏng.
+
 **Token đã đo.** Smoke live §7 có trung bình **502,33 token vào và 23,33 token ra mỗi ca**. Dự toán dùng số đo này, giả sử mỗi ca gọi model một lần. Giá là USD/triệu token văn bản theo tài liệu OpenAI, đối chiếu ngày 27/11/2026. Dòng GPT-4.1 mini tính giá trên cùng số token đã đo ở GPT-4o mini. [Giá GPT-4o mini](https://developers.openai.com/api/docs/models/gpt-4o-mini) · [Giá GPT-4.1 mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini)
 
 **Quy mô tự ước tính.** Thấp 100, cơ sở 300, cao 1.000 khách có khiếu nại mỗi tháng. Dùng cơ cấu 1,6 ca/khách/tháng ở §2, tương ứng **160, 480 và 1.600 ca/tháng**. Tỷ lệ task đạt **80%** trong bảng là một giả định dùng để lập ngân sách. Chi phí/task đạt bằng chi phí/ca chia cho tỷ lệ task đạt.
@@ -187,5 +189,6 @@ Codex hỗ trợ dựng khung, nối adapter và service, viết test và rà t�
 | 27/11 16:38 | Cập nhật dữ liệu review và số liệu bằng chứng D1. | 13/31 review nhắc khó khiếu nại và 14 trích dẫn. [PR #6](https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/pull/6) |
 | 27/11 17:32–17:38 | Đưa sơ đồ, chuẩn đạt và Canvas CP2 lên `main`. | [Spec CP2](https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/commit/38fd5a25505d8d9ed0aef71472c8dcb7f4248544) · [Canvas CP2](https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/commit/83577ce935bd4ee9eedef52e8cb4d1967985f403) |
 | 27/11 trước CP2 | Hoàn thiện các mục còn trống trong spec và ghi tình trạng kiểm thử, chi phí. | Dựa trên bằng chứng, fixture và lượt smoke ở §1, §5, §7, §8. |
+| 27/11 23:01 | Sửa kiểm tra yêu cầu hoàn cả đơn ở rules và đo lượt 2 trên cùng 24 ca. | B15 đạt, tổng 24/24. [Báo cáo đánh giá](eval/report.md) · [Chi phí 50 phiên](cost/cost-estimate.md) · [Slide CP4](demo-slides.pdf) |
 
 Ghi những thay đổi phát sinh sau CP2 và sau CP4 tại mục này, kèm mốc giờ, lý do và nguồn đối chiếu. Giữ nguyên chuẩn đạt §7 từ mốc 19:30 ngày 27/11.

@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BDHT D1 · Khiếu nại đơn giao đồ ăn</title>
+  <style>
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", Arial, sans-serif;
+  --dark: #132735;
+  --ink: #132735;
+  --muted: #435c66;
+  --white: #fbfaf5;
+  --mint: #c9efdc;
+  --accent: #eab068;
+  --line: #becfc7;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #0a1921; overflow: hidden; }
+a { color: inherit; text-underline-offset: 4px; }
+button { font: inherit; cursor: pointer; }
+#deck { position: absolute; inset: 0; margin: auto; width: 1600px; height: 900px; transform: scale(var(--fit, 1)); }
+.slide {
+  display: none; position: relative; width: 1600px; height: 900px; padding: 56px 88px 66px;
+  color: var(--ink); background: var(--white); flex-direction: column;
+}
+.slide.is-current { display: flex; }
+.slide.dark { background: var(--dark); color: #f8f7ee; --muted: #b5cbd0; --line: #527070; }
+.slide.mint { background: #e1f3e9; --line: #a7c9bb; }
+.chapter { color: var(--muted); font-size: 23px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 28px; }
+.chapter::before { content: ""; display: inline-block; width: 22px; height: 4px; margin-right: 14px; margin-bottom: 6px; background: #ad552b; }
+.dark .chapter::before { background: #eab068; }
+h1 { font-size: 72px; font-weight: 750; line-height: 1.04; letter-spacing: -.05em; margin: 0 0 32px; }
+p { margin: 0; }
+.lead { font-size: 33px; line-height: 1.35; color: var(--muted); max-width: 760px; }
+.lead.limit { max-width: 1000px; }
+.detail { color: var(--muted); font-size: 22px; line-height: 1.42; }
+.split { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 56px; }
+.sourcebar { display: flex; justify-content: space-between; align-items: center; gap: 20px; position: absolute; bottom: 35px; left: 88px; right: 88px; color: var(--muted); font-size: 17px; }
+.sourcebar span:last-child { font-variant-numeric: tabular-nums; }
+.opening h1 { font-size: 106px; margin-bottom: 24px; max-width: 840px; }
+.pain { grid-template-columns: 820px 1fr; gap: 68px; }
+blockquote { margin: 47px 0 0; border-left: 4px solid var(--accent); padding-left: 22px; max-width: 770px; font: 36px/1.32 Georgia, serif; }
+cite { display: block; margin-top: 12px; color: var(--muted); font: normal 19px/1.3 "Segoe UI", Arial, sans-serif; }
+.pain-data { align-self: start; padding-top: 8px; }
+.giant { display: block; color: var(--mint); font-size: 125px; line-height: 1; letter-spacing: -.07em; }
+.giant span { color: #75a99c; }
+.pain-data p { margin-top: 21px; font-size: 30px; line-height: 1.3; }
+.pain-data small { display: block; color: var(--muted); font-size: 20px; margin-top: 17px; }
+.tradeoffs { display: grid; gap: 4px; margin: 14px 0 27px; }
+.tradeoff { display: grid; grid-template-columns: 205px 1fr 325px; align-items: center; gap: 24px; border-top: 1px solid var(--line); padding: 20px 24px; }
+.tradeoff.chosen { background: #e1f3e9; border-color: #96c6ad; }
+.tradeoff > strong { font-size: 54px; line-height: 1; letter-spacing: -.035em; }
+.tradeoff b { font-size: 29px; }
+.tradeoff p { color: var(--muted); margin-top: 4px; font-size: 23px; }
+.tradeoff > span { color: var(--muted); font-size: 22px; }
+.chosen > span { color: #195846; font-weight: 700; }
+.callout { margin-top: 20px; padding: 20px 22px; border-left: 4px solid #ad552b; background: #f4ecde; color: #493424; font-size: 24px; line-height: 1.42; }
+.flow { margin-top: 50px; display: grid; grid-template-columns: 1fr auto 1fr auto 1.15fr auto 1fr; gap: 20px; align-items: stretch; }
+.flow > div { border-top: 3px solid #427d62; padding: 21px 0 15px; }
+.flow > div span { display: block; color: #345b4d; font-size: 21px; }
+.flow b { display: block; margin-top: 14px; font-size: 37px; line-height: 1.13; }
+.flow-arrow { color: #347654; align-self: center; font-size: 41px; }
+.two-notes { display: flex; gap: 70px; margin: 32px 0 26px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 27px; }
+.demo { grid-template-columns: 1fr 660px; gap: 72px; align-items: start; }
+.demo-cases > .detail { margin-bottom: 12px; }
+.demo-case { border-top: 1px solid var(--line); padding: 19px 0; display: grid; gap: 5px; }
+.demo-case b { font-size: 30px; }
+.demo-case strong { color: #1b6a4b; font-size: 56px; line-height: 1.08; }
+.demo-case.hard strong { color: #a04724; }
+.demo-case span, figcaption { font-size: 23px; color: var(--muted); }
+.product-shot { margin: 0; background: #e7efed; padding: 17px 22px 16px; }
+.product-shot img { display: block; width: 100%; height: 430px; object-fit: contain; }
+figcaption { font-size: 17px; text-align: center; margin: 12px 0 0; }
+.run-numbers { display: flex; align-items: flex-end; gap: 35px; margin: -11px 0 35px; }
+.run-numbers span { display: block; color: var(--muted); font-size: 22px; }
+.run-numbers strong { color: var(--mint); display: block; font-size: 84px; line-height: 1; letter-spacing: -.04em; }
+.run-numbers > b { font-size: 52px; line-height: 1.1; color: #eab068; }
+.eval-layout { grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-bottom: 29px; }
+.case-explainer { border-top: 1px solid var(--line); padding-top: 20px; font-size: 26px; line-height: 1.37; }
+.case-explainer p { margin: 12px 0; color: var(--muted); }
+.case-explainer strong { color: var(--mint); }
+.metrics { border-collapse: collapse; width: 100%; font-size: 22px; text-align: left; }
+.metrics th, .metrics td { border-bottom: 1px solid var(--line); padding: 11px 10px; }
+.metrics th { color: var(--muted); }
+.metrics td:last-child { color: var(--mint); font-weight: 650; }
+.cost-feature { display: flex; align-items: center; gap: 34px; margin-bottom: 32px; }
+.cost-feature > strong { font-size: 91px; color: #1e654c; line-height: 1; letter-spacing: -.055em; }
+.cost-feature b { display: block; font-size: 28px; }
+.cost-feature p { color: var(--muted); font-size: 23px; margin-top: 5px; }
+.cost-scenarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 23px; }
+.cost-scenarios > div { border-top: 1px solid var(--line); padding: 17px 22px; display: grid; gap: 5px; }
+.cost-scenarios .main-scenario { background: #e1f3e9; border-color: #80ae98; }
+.cost-scenarios span { color: var(--muted); font-size: 24px; }
+.cost-scenarios strong { font-size: 48px; letter-spacing: -.04em; }
+.cost-scenarios small { color: var(--muted); font-size: 20px; }
+.decision-lines { display: grid; margin: 25px 0; }
+.decision-lines p { display: grid; grid-template-columns: 330px 1fr; align-items: baseline; gap: 22px; padding: 17px 0; border-top: 1px solid var(--line); }
+.decision-lines strong { color: #1f654a; font-size: 56px; line-height: 1; letter-spacing: -.04em; }
+.decision-lines span { font-size: 30px; }
+.next-steps { display: grid; margin-top: 8px; }
+.next-steps > div { display: grid; grid-template-columns: 65px 590px 1fr; gap: 20px; padding: 25px 0; border-top: 1px solid var(--line); align-items: baseline; }
+.next-steps span { color: var(--mint); font: 24px/1.2 Consolas, monospace; }
+.next-steps b { font-size: 32px; }
+.next-steps p { color: var(--muted); font-size: 25px; line-height: 1.34; }
+.closing { margin-top: 35px; color: var(--mint); font-size: 26px; font-weight: 650; }
+nav { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; color: #e8f7f4; font-size: 15px; }
+nav button { border: 1px solid #4f6770; border-radius: 8px; background: #142935; color: #e8f7f4; padding: 7px 11px; }
+nav button:disabled { opacity: .45; cursor: default; }
+@page { size: 1600px 900px; margin: 0; }
+@media print {
+  html, body { margin: 0; overflow: visible; background: white; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  #deck { position: static; width: 1600px; height: auto; transform: none; }
+  .slide { display: flex; break-after: page; }
+  .slide:last-child { break-after: auto; }
+  nav { display: none; }
+}
+  </style>
+</head>
+<body>
+  <main id="deck" aria-label="Slide thuyết trình D1">
+    <section class="slide dark opening is-current" aria-labelledby="title-1">
+      <p class="chapter">BDHT · L3A · Track D1</p>
+      <h1 id="title-1">Thiếu một món.<br>Giờ làm gì?</h1>
+      <div class="split pain">
+        <div>
+          <p class="lead">BDHT giúp khách vừa nhận đơn thiếu, sai món hoặc giao trễ biết bước xử lý tiếp theo.</p>
+          <blockquote>“giao sai đơn+ thiếu món là bên app hay quán giải quyết vậy”
+            <cite>Review Google Play · R123 · đã ẩn danh</cite>
+          </blockquote>
+        </div>
+        <div class="pain-data">
+          <strong class="giant">13<span>/</span>31</strong>
+          <p>review có sự cố trong mẫu đọc tay nhắc đến khó khăn khi khiếu nại.</p>
+          <small>40 review đọc tay từ nguồn Google Play VN.</small>
+        </div>
+      </div>
+      <footer class="sourcebar"><span><a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/evidence/summary.md">Bằng chứng D1</a> · <a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/evidence/data-mining.md">Cách lấy mẫu</a></span><span>1 / 8</span></footer>
+    </section>
+
+    <section class="slide light" aria-labelledby="title-2">
+      <p class="chapter">Chọn bài toán</p>
+      <h1 id="title-2">Bắt đầu từ thiếu và sai món</h1>
+      <div class="tradeoffs">
+        <div class="tradeoff chosen"><strong>12/19</strong><div><b>Thiếu hoặc sai món</b><p>Review trong nhóm này nhắc khó khiếu nại.</p></div><span>Luồng chính</span></div>
+        <div class="tradeoff"><strong>1/12</strong><div><b>Giao trễ</b><p>Review giao trễ nhắc khó khiếu nại.</p></div><span>Thử ca sát ngưỡng</span></div>
+        <div class="tradeoff"><strong>169</strong><div><b>Liên hệ nhiều lần</b><p>Review khớp từ khóa trong 5.433 review đã bỏ trùng.</p></div><span>Hoãn để có lịch sử hồ sơ</span></div>
+      </div>
+      <p class="callout"><b>2.400 phút/tháng</b> xử lý ước tính ở kịch bản cơ sở. Quy mô 300 khách, 1,6 ca/khách, 5 phút/ca.</p>
+      <footer class="sourcebar"><span><a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/spec.md">Spec §2 · Bảng impact</a> · <a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/evidence/summary.md">Số đếm review</a></span><span>2 / 8</span></footer>
+    </section>
+
+    <section class="slide mint" aria-labelledby="title-3">
+      <p class="chapter">Thiết kế</p>
+      <h1 id="title-3">Khoản tiền phải có căn cứ từ đơn</h1>
+      <p class="lead limit">Khách gửi mã đơn và một mô tả. Hệ thống trả phương án kèm căn cứ và bước cần làm.</p>
+      <div class="flow" aria-label="Luồng tiếp nhận và xử lý">
+        <div><span>Đầu vào</span><b>Mã đơn<br>+ mô tả</b></div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div><span>OpenAI</span><b>Nhận diện<br>sự cố</b></div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div><span>Python</span><b>Đối chiếu đơn<br>và hạn mức</b></div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div><span>Đầu ra</span><b>Phương án<br>và lý do</b></div>
+      </div>
+      <div class="two-notes"><p><b>Thiếu bằng chứng</b> → hỏi bổ sung.</p><p><b>Vượt mức</b> → yêu cầu người xem xét.</p></div>
+      <p class="detail">Bản thử nghiệm tra 9 đơn và 3 quy tắc <strong>demo-1</strong>.</p>
+      <footer class="sourcebar"><span><a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/spec.md">Spec §4 · Kiến trúc</a> · <a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/data/demo/README.md">Đơn và quy tắc thử nghiệm</a></span><span>3 / 8</span></footer>
+    </section>
+
+    <section class="slide light" aria-labelledby="title-4">
+      <p class="chapter">Demo trực tiếp</p>
+      <h1 id="title-4">Cùng một đơn, hai yêu cầu</h1>
+      <div class="split demo">
+        <div class="demo-cases">
+          <p class="detail">D1-001 · Đơn dùng để thử</p>
+          <div class="demo-case"><b>“Thiếu một phần khoai.”</b><strong>35.000đ</strong><span>Đề xuất hoàn phần đã xác minh.</span></div>
+          <div class="demo-case hard"><b>“Xin hoàn cả đơn 500.000đ.”</b><strong>0đ</strong><span>Cần nhân viên xem xét.</span></div>
+        </div>
+        <figure class="product-shot">
+          <img src="slides/demo-proof.png" alt="Giao diện live trả đề xuất hoàn 35.000 đồng và quy tắc D1-MISSING">
+          <figcaption>Phản hồi live của ca thiếu khoai trên bản CP4.</figcaption>
+        </figure>
+      </div>
+      <footer class="sourcebar"><span><a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/eval/run-2.csv">Ca B01 và B02 · Lượt 2</a> · <a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/demo/links.md">Kịch bản demo</a></span><span>4 / 8</span></footer>
+    </section>
+
+    <section class="slide dark" aria-labelledby="title-5">
+      <p class="chapter">Đánh giá</p>
+      <h1 id="title-5">Một lần sửa, một ca hết trượt</h1>
+      <div class="run-numbers"><div><span>Lượt 1</span><strong>23/24</strong></div><b aria-hidden="true">→</b><div><span>Lượt 2</span><strong>24/24</strong></div></div>
+      <div class="split eval-layout">
+        <div class="case-explainer">
+          <b>B15 · Khách nói đã khiếu nại nhiều lần.</b>
+          <p>Model từng hiểu nhầm thành đòi hoàn cả đơn. Rule bây giờ kiểm lời khách trước khi dùng giá trị cả đơn.</p>
+          <strong>Lượt 2 trả 0đ, chưa đủ điều kiện bồi thường.</strong>
+        </div>
+        <table class="metrics">
+          <thead><tr><th>Chỉ số</th><th>Chuẩn CP2</th><th>Lượt 2</th></tr></thead>
+          <tbody>
+            <tr><td>Trong hạn mức</td><td>100%</td><td>24/24</td></tr>
+            <tr><td>Quyết định đúng</td><td>≥85% · ≥21/24</td><td>24/24</td></tr>
+            <tr><td>Đúng quy tắc</td><td>≥90%</td><td>17/17</td></tr>
+            <tr><td>Từ chối an toàn</td><td>100%</td><td>2/2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="detail">Cùng 24 ca, gồm 8 ca dựa trên review và 16 ca tự viết · gpt-4o-mini-2024-07-18</p>
+      <footer class="sourcebar"><span><a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/eval/report.md">Hồ sơ chấm hai lượt</a> · <a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/eval/run-2.csv">run-2@20261127-230130</a></span><span>5 / 8</span></footer>
+    </section>
+
+    <section class="slide light" aria-labelledby="title-6">
+      <p class="chapter">Chi phí</p>
+      <h1 id="title-6">Đo chi phí trên 50 phiên live</h1>
+      <div class="cost-feature"><strong>0,000073</strong><div><b>USD / task thành công</b><p>GPT-4o mini · Dùng tỷ lệ đạt 24/24 từ lượt 2.</p></div></div>
+      <div class="cost-scenarios">
+        <div><span>100 khách/tháng</span><strong>$0,0103</strong><small>Thấp · 160 phiên</small></div>
+        <div class="main-scenario"><span>300 khách/tháng</span><strong>$0,0309</strong><small>Cơ sở · 480 phiên</small></div>
+        <div><span>1.000 khách/tháng</span><strong>$0,1032</strong><small>Cao · 1.600 phiên</small></div>
+      </div>
+      <p class="detail">Cùng lượng token, giá GPT-4.1 mini cho kịch bản cơ sở là 0,0825 USD/tháng. Quy mô và tần suất do nhóm ước tính.</p>
+      <p class="callout">Cơ sở có <b>2.400 phút xử lý/tháng</b> ước tính. Nhóm sẽ đo số phút thực sự tiết kiệm khi thử nội bộ.</p>
+      <footer class="sourcebar"><span><a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/cost/cost-estimate.md">Bảng chi phí và nguồn giá</a> · <a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/cost/simulate-1.csv">50 phiên đo thật</a></span><span>6 / 8</span></footer>
+    </section>
+
+    <section class="slide mint decision" aria-labelledby="title-7">
+      <p class="chapter">Quyết định</p>
+      <h1 id="title-7">Thử nội bộ có người duyệt</h1>
+      <p class="lead limit">Ưu tiên kiểm tra xem khách có hiểu phương án và biết phải làm gì tiếp theo.</p>
+      <div class="decision-lines">
+        <p><strong>13/31</strong><span>Review có sự cố nhắc vướng mắc khi khiếu nại.</span></p>
+        <p><strong>24/24</strong><span>Ca thử đạt sau khi sửa lỗi suy diễn ở B15.</span></p>
+        <p><strong>$0,0309</strong><span>Chi phí model mỗi tháng trong kịch bản 300 khách.</span></p>
+      </div>
+      <p class="detail">Thử trên dữ liệu demo-1. Kết quả vượt mức hiển thị cần xem xét, chưa tạo hồ sơ cho CSKH.</p>
+      <footer class="sourcebar"><span><a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/evidence/summary.md">Bằng chứng</a> · <a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/eval/report.md">Kết quả</a> · <a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/cost/cost-estimate.md">Chi phí</a></span><span>7 / 8</span></footer>
+    </section>
+
+    <section class="slide dark final" aria-labelledby="title-8">
+      <p class="chapter">Tuần tiếp theo</p>
+      <h1 id="title-8">Đo trải nghiệm trước khi mở rộng</h1>
+      <div class="next-steps">
+        <div><span>01</span><b>Quan sát 3 khách từng gặp sự cố</b><p>Cho tự gửi khiếu nại, đo thời gian và hỏi họ sẽ làm gì tiếp.</p></div>
+        <div><span>02</span><b>Thử thêm cách diễn đạt quanh B15</b><p>Kiểm ca phàn nàn nhiều lần, yêu cầu tiền mơ hồ và đơn có nhiều sự cố.</p></div>
+        <div><span>03</span><b>Xác minh dữ liệu vận hành</b><p>Kiểm nguồn đơn được cấp quyền, quy tắc áp dụng và cách bàn giao cho người duyệt.</p></div>
+      </div>
+      <p class="closing">BDHT · Đơn giao thiếu, sai món và giao trễ</p>
+      <footer class="sourcebar"><span><a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/eval/report.md">Phạm vi kết quả</a> · <a href="https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/blob/main/spec.md">Spec · Giới hạn vận hành</a></span><span>8 / 8</span></footer>
+    </section>
+  </main>
+  <nav aria-label="Điều khiển slide">
+    <button id="previous" type="button">← Trang trước</button>
+    <span id="count" aria-live="polite"></span>
+    <button id="next" type="button">Trang sau →</button>
+  </nav>
+  <script>
+const deck = document.getElementById("deck");
+const pages = Array.from(deck.querySelectorAll(".slide"));
+const previous = document.getElementById("previous");
+const next = document.getElementById("next");
+const count = document.getElementById("count");
+let index = 0;
+
+function show(page) {
+  index = Math.max(0, Math.min(page, pages.length - 1));
+  pages.forEach((element, i) => element.classList.toggle("is-current", i === index));
+  previous.disabled = index === 0;
+  next.disabled = index === pages.length - 1;
+  count.textContent = (index + 1) + " / " + pages.length;
+}
+
+function fit() {
+  const margin = 56;
+  const factor = Math.min(window.innerWidth / 1600, (window.innerHeight - margin) / 900);
+  deck.style.setProperty("--fit", Math.max(factor, 0.1));
+}
+
+previous.addEventListener("click", () => show(index - 1));
+next.addEventListener("click", () => show(index + 1));
+window.addEventListener("resize", fit);
+window.addEventListener("keydown", (event) => {
+  if (event.altKey || event.ctrlKey || event.metaKey) return;
+  if (["ArrowRight", "PageDown"].includes(event.key)) {
+    event.preventDefault();
+    show(index + 1);
+  } else if (["ArrowLeft", "PageUp"].includes(event.key)) {
+    event.preventDefault();
+    show(index - 1);
+  } else if (event.key === "Home") {
+    show(0);
+  } else if (event.key === "End") {
+    show(pages.length - 1);
+  }
+});
+fit();
+show(0);
+  </script>
+</body>
+</html>

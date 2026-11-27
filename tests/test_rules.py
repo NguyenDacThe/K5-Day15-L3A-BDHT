@@ -123,7 +123,10 @@ class RulesTest(unittest.TestCase):
     def test_full_order_and_above_eligible_requests(self):
         cases = (
             ("full_order", self.missing("Thiếu khoai. Hoàn 100% giúp mình.")),
+            ("whole_order_paraphrase", self.missing("Thiếu khoai. Trả lại toàn bộ số tiền của đơn hàng.")),
+            ("whole_payment", self.missing("Thiếu khoai. Hoàn lại toàn bộ tiền đã thanh toán.")),
             ("requested_50000", self.missing("Đơn mình thiếu khoai. Mình muốn yêu cầu hoàn tiền.", requested_amount_vnd=50000)),
+            ("review_pressure", self.missing("Thiếu khoai. Tôi muốn hoàn 50.000đ hoặc sẽ đánh giá 1 sao.", requested_amount_vnd=50000)),
         )
         for label, result in cases:
             with self.subTest(case=label):
@@ -179,6 +182,17 @@ class RulesTest(unittest.TestCase):
             (result.policy_ref.rule_id, result.policy_ref.version, result.policy_ref.kind),
             ("D1-MISSING", "demo-1", "demo"),
         )
+
+    def test_model_full_order_label_requires_an_explicit_full_refund(self):
+        cases = (
+            ("D1-007", "pizza", "Mình báo thiếu pizza lần thứ hai rồi.", Decision.NO_COMPENSATION, 0),
+            ("D1-001", "khoai", "Thiếu khoai, mình muốn được hoàn tiền.", Decision.PROPOSE_REFUND, 35000),
+        )
+        for order_id, item, message, decision, amount in cases:
+            with self.subTest(order_id=order_id):
+                triage = TriageResult(issue_type=IssueType.MISSING_ITEM, item_hint=item, demand_kind=DemandKind.FULL_ORDER)
+                result = decide(ComplaintRequest(order_id=order_id, message=message), lambda _: triage)
+                self.assertEqual((result.decision, result.proposed_amount_vnd), (decision, amount))
 
     def test_wrong_item_uses_wrong_quantity(self):
         self.item.update(missing_qty=0, wrong_qty=1, unit_paid_vnd=45000)

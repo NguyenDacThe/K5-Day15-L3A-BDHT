@@ -1,0 +1,23 @@
+{
+  "version": "demo-1",
+  "kind": "demo",
+  "rules": [
+    {
+      "rule_id": "D1-MISSING",
+      "issue_type": "MISSING_ITEM",
+      "max_amount_vnd": 50000
+    },
+    {
+      "rule_id": "D1-WRONG",
+      "issue_type": "WRONG_ITEM",
+      "max_amount_vnd": 50000
+    },
+    {
+      "rule_id": "D1-LATE",
+      "issue_type": "LATE_DELIVERY",
+      "max_amount_vnd": 50000,
+      "late_after_minutes": 30,
+      "voucher_vnd": 50000
+    }
+  ]
+}

@@ -1,41 +1,41 @@
 ma,store,thang_review,so_sao,su_co_don,loai_su_co,kho_khieu_nai,trich_dan_an_danh
-R01,googleplay,11/2026,4,n,,,
-R02,googleplay,11/2026,1,y,hoan_tien,y,Đơn hàng bị hủy do ship nhưng 2 tháng trời bên shopee food ko hoàn lại tiền. Đòi t gửi sao kê giấy
-R03,googleplay,11/2026,1,y,giao_tre,n,
-R04,googleplay,11/2026,1,n,,,
-R05,googleplay,11/2026,3,n,,,
-R06,googleplay,11/2026,3,y,khac,n,
-R07,googleplay,11/2026,1,y,giao_tre,n,
-R08,googleplay,11/2026,1,n,,,
-R09,googleplay,11/2026,1,n,,,
-R10,googleplay,11/2026,1,y,thieu_mon,y,"Quán giao món thiếu, shopfood xử lý bằng cách hoàn mã giảm giá, k hoàn tiền"
-R11,googleplay,11/2026,1,n,,,
-R12,googleplay,11/2026,3,n,,,
-R13,googleplay,11/2026,1,n,,,
-R14,googleplay,11/2026,1,y,giao_tre,n,"Đơn tới mình thì thiếu sót đồ, không thì đồ ăn nguội lạnh"
-R15,googleplay,11/2026,5,n,,,
-R16,googleplay,11/2026,1,y,giao_tre,n,
-R17,googleplay,10/2026,1,y,khac,n,
-R18,googleplay,10/2026,1,n,,,
-R19,googleplay,10/2026,1,y,giao_tre,y,cskh cứ lặp lại 1 câu như đang chat với AI.
-R20,googleplay,10/2026,1,n,,,
-R21,googleplay,10/2026,1,n,,,
-R22,googleplay,10/2026,1,y,giao_tre,y,Muốn liên hệ tổng đài thì không có bất cứ thông tin gì.
-R23,googleplay,10/2026,1,y,hoan_tien,n,
-R24,googleplay,10/2026,1,y,hoan_tien,n,
-R25,googleplay,10/2026,4,n,,,
-R26,googleplay,10/2026,1,n,,,
-R27,googleplay,10/2026,1,n,,,
-R28,googleplay,10/2026,1,y,khac,y,"mỗi lần đơn có vấn đề là t báo cáo lên app, nhưng con tép nó phản hồi lâu kinh khủng"
-R29,googleplay,10/2026,1,y,hoan_tien,y,đã yêu cầu hỗ trợ nhưng toàn để chat bot hỗ trợ sao mà xử lý được. Gọi số tổng đài thì không liên lạc được.
-R30,googleplay,10/2026,1,y,giao_tre,n,
-R31,appstore,11/2018,5,n,,,
-R32,appstore,04/2021,1,n,,,
-R33,appstore,09/2020,1,n,,,
-R34,appstore,06/2020,1,y,hoan_tien,y,"mình đã gọi bên bộ phận chăm sóc khách hàng rồi nhưng chỉ kêu ""đợi"""
-R35,appstore,09/2020,1,y,hoan_tien,y,mình báo cáo thì chưa lần nào được phản hồi lại.
-R36,appstore,06/2020,1,n,,,
-R37,appstore,04/2021,1,n,,,
-R38,appstore,04/2021,1,n,,,
-R39,appstore,04/2021,1,n,,,
-R40,appstore,04/2021,1,n,,,
+R101,googleplay,11/2026,1,y,giao_tre,n,
+R102,googleplay,11/2026,1,y,giao_tre,n,
+R103,googleplay,11/2026,1,y,giao_tre,n,
+R104,googleplay,11/2026,1,y,giao_tre,n,đặt từ 10h37 mà 12h07 mới nhận đồ ăn.
+R105,googleplay,11/2026,2,n,,,
+R106,googleplay,11/2026,1,y,giao_tre,n,
+R107,googleplay,11/2026,2,y,giao_tre,n,
+R108,googleplay,11/2026,1,y,thieu_mon,y,"Quán giao món thiếu, shopfood xử lý bằng cách hoàn mã giảm giá, k hoàn tiền"
+R109,googleplay,11/2026,1,y,giao_tre,n,
+R110,googleplay,11/2026,1,n,,,
+R111,googleplay,11/2026,1,y,giao_tre,y,đt cho tổng tài thì ko nhận đc kết quả nhắn tin cx ko có tác dụng j hết
+R112,googleplay,11/2026,1,y,giao_tre,n,
+R113,googleplay,11/2026,5,n,,,
+R114,googleplay,11/2026,1,y,giao_tre,n,
+R115,googleplay,10/2026,1,n,,,
+R116,googleplay,10/2026,1,y,giao_tre,n,
+R117,googleplay,10/2026,1,y,giao_tre,n,
+R118,googleplay,10/2026,1,y,thieu_mon,n,
+R119,googleplay,09/2026,1,y,sai_mon,n,
+R120,googleplay,09/2026,1,y,thieu_mon,y,shop làm thiếu món mà yêu cầu hỗ trợ thì load mãi kh trl
+R121,googleplay,09/2026,1,n,,,
+R122,googleplay,08/2026,1,n,,,
+R123,googleplay,08/2026,1,y,sai_mon,y,giao sai đơn+ thiếu món là bên app hay quán giải quyết vậy
+R124,googleplay,08/2026,1,y,sai_mon,n,bán sai món nhưng thu đủ tiền
+R125,googleplay,06/2026,1,y,thieu_mon,n,
+R126,googleplay,06/2026,1,y,sai_mon,y,Quán làm sai món rồi vứt cho khách cái vorcher 15k ko bồi hoàn dc
+R127,googleplay,06/2026,2,y,thieu_mon,n,
+R128,googleplay,05/2026,1,y,thieu_mon,y,
+R129,googleplay,05/2026,1,n,,,
+R130,googleplay,05/2026,4,y,sai_mon,y,"khi shipper giao nhầm món thì khi phát hiện ra shipper từ chối quay lại, và nói là do đã đi xa rồi, mà KH cũng ko báo đc cho ai để xử lý?"
+R131,googleplay,05/2026,1,y,thieu_mon,n,
+R132,googleplay,04/2026,1,y,thieu_mon,y,đồ ăn bị thiếu không được hoàn tiền hỗ trợ
+R133,googleplay,03/2026,1,y,thieu_mon,n,
+R134,googleplay,01/2026,1,y,thieu_mon,y,"giao thiếu, khiếu nại Shopeefood thì nó cho bot nói chuyện, nói tới lui thì đòi gừi theo form báo cáo mà lại bị lỗi ko up ảnh"
+R135,googleplay,01/2026,1,y,sai_mon,y,sai món k cách nào liên hệ đc tài xế
+R136,googleplay,10/2025,1,y,thieu_mon,y,đơn hàng bị giao thiếu gửi biểu mẫu gần tuần nay mà không phản hồi hay xử lý
+R137,googleplay,10/2025,1,y,thieu_mon,y,cũng chả liên hệ đc với tổng đài shopee để nhờ hỗ trợ
+R138,googleplay,10/2025,1,n,,,
+R139,googleplay,07/2025,1,y,sai_mon,y,dù đã gửi đủ chứng cứ và lịch sử đơn hàng cũng có thể chứng minh app gửi sai món cho quán nhưng vẫn đơn phương kết thúc hỗ trợ
+R140,googleplay,06/2022,2,n,,,

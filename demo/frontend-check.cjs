@@ -16,7 +16,7 @@ const fixture = (overrides = {}) => ({
 });
 const requests = {
   missing: { orderId: 'D1-001', message: 'Đơn mình thiếu một phần khoai.', amount: '' },
-  excess: { orderId: 'D1-001', message: 'Thiếu khoai, tôi muốn hoàn cả đơn.', amount: '500000' },
+  excess: { orderId: 'D1-001', message: 'Thiếu khoai, tôi muốn hoàn 100% cả đơn 500.000đ.', amount: '500000' },
   late30: { orderId: 'D1-004', message: 'Đơn hàng của tôi giao trễ.', amount: '' },
   late31: { orderId: 'D1-005', message: 'Đơn hàng của tôi giao trễ.', amount: '' },
 };
@@ -40,9 +40,12 @@ async function check(id, mode, expectation, action) {
     await page.goto(baseURL);
     if (caseName) {
       const input = requests[caseName];
-      await page.fill('#order-id', input.orderId);
-      await page.fill('#message', input.message);
-      await page.fill('#requested-amount', input.amount);
+      const sample = page.locator(`[data-sample="${caseName}"]`);
+      await sample.click();
+      assert.equal(await sample.getAttribute('aria-pressed'), 'true');
+      assert.equal(await page.inputValue('#order-id'), input.orderId);
+      assert.equal(await page.inputValue('#message'), input.message);
+      assert.equal(await page.inputValue('#requested-amount'), input.amount);
     }
   };
   const respond = async (data, status = 200) => {
@@ -59,16 +62,31 @@ async function check(id, mode, expectation, action) {
     await page.screenshot({ path: path.join(artifactDir, 'desktop-idle.png'), fullPage: true });
     return '5 đường dẫn HTTP 200; trang ở idle';
   });
-  await check('FE-02', 'Browser', 'Form mở trống và chưa gửi yêu cầu', async () => {
-    let calls = 0;
-    await page.route('**/api/complaints', (route) => { calls++; return route.abort(); });
+  await check('FE-02', 'Browser', 'Bốn nút chỉ điền form, trang không tải chi tiết đơn', async () => {
+    let complaintCalls = 0;
+    let orderDataReads = 0;
+    await page.route('**/api/complaints', (route) => { complaintCalls++; return route.abort(); });
+    await page.route('**/assets/orders.json', (route) => { orderDataReads++; return route.abort(); });
     await page.goto(baseURL);
-    assert.equal(await page.locator('[data-sample]').count(), 0);
+    assert.equal(await page.locator('[data-sample]').count(), 4);
+    assert.equal(await page.locator('[aria-pressed="true"]').count(), 0);
+    assert.equal(await page.locator('#order-id').getAttribute('type'), 'text');
     for (const field of ['#order-id', '#message', '#requested-amount']) {
       assert.equal(await page.inputValue(field), '');
     }
-    assert.doesNotMatch(await page.locator('body').innerText(), /D1-00\d|hackathon|demo|mô phỏng|giả lập|Chế độ thử/i);
-    assert.equal(calls, 0);
+    await page.locator('[data-sample="excess"]').press('Enter');
+    assert.equal(await page.inputValue('#requested-amount'), '500000');
+    await page.locator('[data-sample="late31"]').click();
+    assert.equal(await page.inputValue('#order-id'), 'D1-005');
+    assert.equal(await page.inputValue('#requested-amount'), '');
+    assert.equal(await page.locator('[aria-pressed="true"]').count(), 1);
+    await page.fill('#message', 'Mô tả đã chỉnh sửa');
+    assert.equal(await page.locator('[aria-pressed="true"]').count(), 0);
+    assert.equal(await page.locator('#order-details').count(), 0);
+    assert.equal(await page.locator('body').innerText().then((text) => /hackathon|demo|mô phỏng|giả lập|Chế độ thử/i.test(text)), false);
+    assert.equal((await page.request.get(baseURL + '/assets/orders.json')).status(), 404);
+    assert.equal(complaintCalls, 0);
+    assert.equal(orderDataReads, 0);
   });
   for (const [id, caseName, decision, amount, issue] of [
     ['FE-03', 'missing', 'PROPOSE_REFUND', 35000, 'MISSING_ITEM'],
@@ -124,6 +142,7 @@ async function check(id, mode, expectation, action) {
     await page.evaluate(() => { const form = document.getElementById('complaint-form'); for (let i = 0; i < 4; i++) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); });
     await page.waitForFunction(() => document.querySelector('#submit-button').disabled);
     assert.equal(await state(), 'loading'); assert.equal(await page.locator('#loading-state').isVisible(), true);
+    assert.equal(await page.locator('[data-sample="late31"]').isEnabled(), false);
     await sent;
     assert.equal(calls, 1); finish(); await waitState('success'); assert.equal(await page.locator('#submit-button').isEnabled(), true);
   });
@@ -186,7 +205,9 @@ async function check(id, mode, expectation, action) {
   });
   await check('FE-22', 'Browser / Mock HTTP fixture', 'Reset xóa form/kết quả; reset khi chờ hủy request cũ', async () => {
     await page.locator('#reset-button').click(); assert.equal(await state(), 'idle');
+    assert.equal(await page.inputValue('#order-id'), '');
     assert.equal(await page.inputValue('#message'), ''); assert.equal(await page.inputValue('#requested-amount'), '');
+    assert.equal(await page.locator('[aria-pressed="true"]').count(), 0);
     assert.equal(await text('#character-count'), '0 / 500'); assert.equal(await page.locator('#result-content').isVisible(), false);
     await fresh(); let pendingRoute;
     await page.route('**/api/complaints', (route) => { pendingRoute = route; });

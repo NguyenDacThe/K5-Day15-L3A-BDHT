@@ -240,7 +240,7 @@ export function createInterface(root = document) {
     field.scrollIntoView({ behavior: root.defaultView.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
   });
   sampleButtons.forEach((button) => button.addEventListener("click", () => fillSample(button.dataset.sample)));
-  formFields.forEach((field) => field.addEventListener(field.tagName === "SELECT" ? "change" : "input", () => {
+  formFields.forEach((field) => field.addEventListener("input", () => {
     clearValidation(); clearSampleSelection(); updateCount();
     if (!activeRequest) {
       const hadFeedback = panel.dataset.state !== "idle";

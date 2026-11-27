@@ -3,49 +3,63 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#c84b20">
+  <meta name="theme-color" content="#c2410c">
   <title>BDHT – Food Support · Hỗ trợ đơn hàng</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%23c84b20'/%3E%3Cpath d='M12 15h16v15H12zM16 15v-3a4 4 0 0 1 8 0v3' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="/assets/style.css">
   <script type="module" src="/assets/app.js"></script>
 </head>
 <body>
+  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <symbol id="icon-bag" viewBox="0 0 24 24"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M8 7V5a4 4 0 0 1 8 0v2m-8 6c1 4 7 4 8 0"/></symbol>
+    <symbol id="icon-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 7h6M9 11h6M9 15h3"/></symbol>
+    <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="icon-escalate" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="icon-ticket" viewBox="0 0 24 24"><path d="M3 6h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V6Z"/><path d="M15 6v2m0 3v2m0 3v2"/></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-9v1"/></symbol>
+    <symbol id="icon-minus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24"><path d="m7 7 10 10M7 17 17 7"/></symbol>
+    <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path d="m12 3 8 4v6c0 4-8 8-8 8s-8-4-8-8V7l8-4Z"/><path d="m8 12 3 3 5-6"/></symbol>
+  </svg>
   <a class="skip-link" href="#complaint-form">Đến form khiếu nại</a>
   <header class="site-header">
     <div class="header-inner">
       <a class="brand" href="/" aria-label="BDHT – Food Support, trang chủ">
-        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 12h18l1 15H6L7 12Z"/><path d="M11 12V9a5 5 0 0 1 10 0v3M12 18c1 4 7 4 8 0"/></svg></span>
+        <span class="brand-mark" aria-hidden="true"><svg class="icon"><use href="#icon-bag"/></svg></span>
         <span>BDHT<span class="brand-sub">Food Support</span></span>
       </a>
-      <div class="header-meta"><span class="header-caption">Hỗ trợ đơn hàng</span><span class="badge badge-neutral">Hackathon · Demo</span></div>
+      <div class="header-meta"><span class="header-caption">Hỗ trợ đơn hàng</span><span class="badge badge-neutral"><span class="demo-dot" aria-hidden="true"></span>Hackathon · Demo</span></div>
     </div>
   </header>
 
   <main id="main-content" class="page-shell">
     <section class="intro" aria-labelledby="page-title">
-      <p class="eyebrow"><span aria-hidden="true"></span> MỘT CÁCH RÕ RÀNG HƠN ĐỂ ĐƯỢC HỖ TRỢ</p>
-      <h1 id="page-title">Đơn hàng có vấn đề?<br><span>Cùng tìm hướng xử lý.</span></h1>
-      <p class="intro-copy">Chọn đơn mẫu, kể lại sự cố và xem phương án đề xuất<br class="desktop-break"> dựa trên thông tin đơn hàng cùng quy tắc xử lý.</p>
+      <p class="eyebrow">BDHT FOOD SUPPORT</p>
+      <h1 id="page-title">Bạn gặp vấn đề với đơn hàng?</h1>
+      <p class="intro-copy">Cho chúng tôi biết sự cố để kiểm tra phương án xử lý phù hợp.</p>
     </section>
 
     <aside class="demo-notice" aria-label="Giới hạn của bản demo">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-9v1"/></svg>
-      <p><strong>Đây là bản demo.</strong> Đơn hàng và quy tắc giả lập. Hệ thống chỉ đề xuất phương án xử lý, không thực hiện hoàn tiền hoặc chuyển nhân viên thật.</p>
+      <svg class="icon" aria-hidden="true"><use href="#icon-info"/></svg>
+      <p><strong>Đơn hàng và quy tắc giả lập.</strong> Hệ thống chỉ đề xuất phương án xử lý, không thực hiện hoàn tiền hoặc chuyển nhân viên thật.</p>
     </aside>
 
     <div class="workspace">
       <section class="card form-card" aria-labelledby="form-title">
-        <div class="card-heading"><span class="section-number" aria-hidden="true">01</span><div><h2 id="form-title">Chia sẻ sự cố của bạn</h2><p>Thông tin rõ ràng giúp đối chiếu chính xác hơn.</p></div></div>
+        <div class="card-heading"><span class="section-number" aria-hidden="true">01</span><div><h2 id="form-title">Thông tin khiếu nại</h2><p>Chọn một mẫu hoặc mô tả sự cố của bạn.</p></div></div>
         <form id="complaint-form" novalidate>
           <fieldset class="samples-fieldset">
-            <legend>Thử một tình huống mẫu</legend>
+            <legend>Điền nhanh tình huống</legend>
             <div class="sample-grid">
-              <button type="button" class="sample-button" data-sample="missing" aria-pressed="false"><span class="sample-icon" aria-hidden="true">▤</span><span><strong>Thiếu món</strong><small>D1-001 · Thiếu một phần khoai</small></span><span class="sample-arrow" aria-hidden="true">↗</span></button>
-              <button type="button" class="sample-button" data-sample="excess" aria-pressed="false"><span class="sample-icon" aria-hidden="true">↗</span><span><strong>Yêu cầu vượt mức</strong><small>D1-001 · Muốn hoàn cả đơn</small></span><span class="sample-arrow" aria-hidden="true">↗</span></button>
-              <button type="button" class="sample-button" data-sample="late30" aria-pressed="false"><span class="sample-icon" aria-hidden="true">◷</span><span><strong>Giao trễ 30 phút</strong><small>D1-004 · Kiểm tra mốc thời gian</small></span><span class="sample-arrow" aria-hidden="true">↗</span></button>
-              <button type="button" class="sample-button" data-sample="late31" aria-pressed="false"><span class="sample-icon" aria-hidden="true">◷</span><span><strong>Giao trễ 31 phút</strong><small>D1-005 · Kiểm tra mốc thời gian</small></span><span class="sample-arrow" aria-hidden="true">↗</span></button>
+              <button type="button" class="sample-button" data-sample="missing" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-receipt"/></svg></span><span><strong>Thiếu món</strong><small>D1-001 · Thiếu khoai</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
+              <button type="button" class="sample-button" data-sample="excess" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-escalate"/></svg></span><span><strong>Yêu cầu vượt mức</strong><small>D1-001 · Hoàn cả đơn</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
+              <button type="button" class="sample-button" data-sample="late30" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-clock"/></svg></span><span><strong>Giao trễ 30 phút</strong><small>D1-004 · Kiểm tra ngưỡng</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
+              <button type="button" class="sample-button" data-sample="late31" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-clock"/></svg></span><span><strong>Giao trễ 31 phút</strong><small>D1-005 · Kiểm tra ngưỡng</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
             </div>
-            <p class="field-hint fixture-note">Các mã đơn mẫu đang chờ tích hợp dữ liệu vào bản demo. Chọn mẫu chỉ điền form.</p>
+            <p class="field-hint fixture-note">Mẫu chỉ điền form. Dữ liệu đơn đang chờ tích hợp.</p>
           </fieldset>
 
           <div class="field">
@@ -60,44 +74,46 @@
           </div>
           <div class="field">
             <label for="message">Nội dung khiếu nại <span class="required" aria-hidden="true">*</span></label>
-            <textarea id="message" name="message" rows="4" maxlength="500" required placeholder="Ví dụ: Đơn mình thiếu một phần khoai…" aria-describedby="message-hint message-error"></textarea>
-            <div class="field-bottom"><span id="message-hint" class="field-hint">Chỉ nhập tình huống giả lập, không nhập thông tin cá nhân.</span><span id="character-count" class="character-count">0 / 500</span></div>
+            <textarea id="message" name="message" rows="3" maxlength="500" required placeholder="Ví dụ: Đơn hàng của tôi bị thiếu một phần khoai chiên…" aria-describedby="message-hint character-count message-error"></textarea>
+            <div class="field-bottom"><span id="message-hint" class="field-hint">Dùng tình huống giả lập, không nhập thông tin cá nhân.</span><span id="character-count" class="character-count" data-level="normal">0 / 500</span></div>
             <p id="message-error" class="field-error" hidden></p>
           </div>
           <div class="field">
             <label for="requested-amount">Số tiền yêu cầu <span class="optional">Không bắt buộc</span></label>
             <div class="amount-input"><input id="requested-amount" name="requested_amount_vnd" type="text" inputmode="numeric" autocomplete="off" placeholder="Để trống nếu chưa có yêu cầu" aria-describedby="amount-hint amount-error"><span aria-hidden="true">VND</span></div>
-            <p id="amount-hint" class="field-hint">Số nguyên từ 0 trở lên. Mức đề xuất do hệ thống trả về.</p>
+            <p id="amount-hint" class="field-hint">Số nguyên không âm. Bỏ trống nếu chưa có yêu cầu.</p>
             <p id="amount-error" class="field-error" hidden></p>
           </div>
-          <div class="form-actions"><button id="submit-button" class="button-primary" type="submit"><span id="submit-label">Kiểm tra phương án</span><span id="submit-symbol" aria-hidden="true">→</span></button><button id="reset-button" class="button-reset" type="reset">Làm mới</button></div>
+          <div class="form-actions"><button id="submit-button" class="button-primary" type="submit"><span id="submit-label">Kiểm tra phương án</span><span id="submit-symbol" aria-hidden="true"><svg class="icon"><use href="#icon-arrow"/></svg></span></button><button id="reset-button" class="button-reset" type="reset"><svg class="icon" aria-hidden="true"><use href="#icon-refresh"/></svg>Làm mới</button></div>
         </form>
       </section>
 
       <section id="result-panel" class="card result-card" aria-labelledby="result-heading" aria-busy="false" data-state="idle">
-        <div class="card-heading"><span class="section-number" aria-hidden="true">02</span><div><h2 id="result-heading">Phương án đề xuất</h2><p>Rõ lý do. Có căn cứ. Trong phạm vi.</p></div><span id="status-badge" class="badge badge-neutral">Chưa gửi</span></div>
+        <div class="card-heading"><span class="section-number" aria-hidden="true">02</span><div><h2 id="result-heading">Phương án xử lý</h2><p>Đề xuất có lý do và căn cứ đối chiếu.</p></div><span id="status-badge" class="badge badge-neutral">Chưa gửi</span></div>
+        <div id="request-summary" class="request-summary" hidden><p class="request-summary-label">Thông tin đã gửi <strong id="request-order"></strong></p><p id="request-message"></p></div>
         <div id="empty-state" class="empty-state">
           <svg class="receipt-art" viewBox="0 0 240 180" aria-hidden="true"><circle cx="120" cy="90" r="73" fill="#f9f1e8"/><circle cx="120" cy="90" r="58" fill="none" stroke="#edddcb" stroke-dasharray="3 7"/><path d="M83 37h74v112l-9-5-10 5-9-5-9 5-9-5-9 5-10-5-9 5V37Z" fill="#fffdf9" stroke="#d8bda6" stroke-width="1.5"/><path d="M99 59h42M99 70h29M99 100h42M99 112h24" fill="none" stroke="#d8bda6" stroke-width="3" stroke-linecap="round"/><circle cx="153" cy="112" r="23" fill="#c84b20"/><path d="m143 112 7 7 13-15" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="m61 60 3 4m111-20 4-4M65 128h-6" stroke="#c98e6d" stroke-width="2" stroke-linecap="round"/></svg>
-          <h3>Một hướng xử lý, nhiều an tâm hơn.</h3><p>Điền thông tin bên trái rồi chọn<br>“Kiểm tra phương án” để bắt đầu.</p>
-          <span class="empty-caption">Kết quả sẽ xuất hiện tại đây</span>
+          <h3>Cùng tìm hướng xử lý phù hợp</h3><p>Điền thông tin khiếu nại, rồi chọn<br>“Kiểm tra phương án” để xem đề xuất.</p>
+          <div class="process-overview"><p>Quy trình chung · không phải tiến trình trực tiếp</p><ol><li><span aria-hidden="true">1</span>Tiếp nhận khiếu nại</li><li><span aria-hidden="true">2</span>Đối chiếu thông tin và quy tắc</li><li><span aria-hidden="true">3</span>Đề xuất phương án phù hợp</li></ol></div>
         </div>
         <div id="loading-state" class="loading-state" hidden><span class="spinner" aria-hidden="true"></span><h3>Đang kiểm tra phương án xử lý...</h3><p>Vui lòng chờ phản hồi từ hệ thống.</p></div>
-        <div id="error-state" class="error-state" hidden><span class="result-symbol" aria-hidden="true">!</span><h3 id="error-title">Chưa nhận được kết quả</h3><p id="error-message"></p><p class="field-hint">Thông tin đã nhập được giữ lại. Bạn có thể kiểm tra và thử lại.</p></div>
+        <div id="error-state" class="error-state" hidden><span class="result-symbol" aria-hidden="true"><svg class="icon"><use href="#icon-info"/></svg></span><h3 id="error-title" tabindex="-1">Chưa nhận được kết quả</h3><p id="error-message"></p><p class="field-hint">Nội dung của bạn vẫn được giữ lại.</p><button id="retry-button" type="button" class="button-secondary"><svg class="icon" aria-hidden="true"><use href="#icon-refresh"/></svg>Thử lại</button></div>
         <div id="result-content" class="result-content" hidden>
-          <div id="decision-banner" class="decision-banner"><span id="decision-symbol" class="result-symbol" aria-hidden="true"></span><div><p class="eyebrow">KẾT QUẢ ĐỐI CHIẾU</p><h3 id="decision-title" tabindex="-1"></h3></div></div>
+          <div id="decision-banner" class="decision-banner"><span id="decision-symbol" class="result-symbol" aria-hidden="true"><svg class="icon"><use id="decision-icon" href="#icon-info"/></svg></span><div><p class="eyebrow">KẾT QUẢ ĐỐI CHIẾU</p><h3 id="decision-title" tabindex="-1"></h3></div></div>
           <p id="availability-notice" class="availability-notice" hidden></p>
-          <div class="proposal"><span>Số tiền đề xuất</span><strong id="proposed-amount"></strong><small>Đề xuất trong mô phỏng · chưa thực hiện chi trả</small></div>
+          <div id="proposal" class="proposal"><span id="proposal-label">Số tiền đề xuất</span><strong id="proposed-amount"></strong><small id="simulation-label">Đề xuất trong mô phỏng · chưa thực hiện chi trả</small></div>
           <div class="reply-section"><h4>Lý do &amp; hướng xử lý</h4><p id="reply"></p></div>
-          <dl class="result-facts"><div><dt>Loại sự cố</dt><dd id="issue-type"></dd></div><div><dt>Phương thức xử lý</dt><dd id="processing-mode"></dd></div><div><dt>Quy tắc tham chiếu</dt><dd id="policy-rule"></dd></div><div id="policy-version-row" hidden><dt>Phiên bản</dt><dd id="policy-version"></dd></div></dl>
-          <details class="technical-details"><summary>Thông tin kỹ thuật</summary><dl><div><dt>Mã lý do</dt><dd id="reason-code"></dd></div><div><dt>Quyết định</dt><dd id="decision-code"></dd></div></dl></details>
+          <button id="edit-button" class="text-button" type="button" hidden>Xem lại thông tin đã nhập <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+          <dl class="result-facts"><div><dt>Loại sự cố</dt><dd id="issue-type"></dd></div><div><dt>Quy tắc tham chiếu</dt><dd id="policy-rule"></dd></div><div id="policy-version-row" hidden><dt>Phiên bản</dt><dd id="policy-version"></dd></div><div class="processing-row"><dt>Phương thức xử lý</dt><dd><span id="processing-mode" class="processing-badge"></span></dd></div></dl>
+          <details class="technical-details"><summary>Chi tiết xử lý</summary><dl><div><dt>Mã lý do</dt><dd id="reason-code"></dd></div><div><dt>Quyết định</dt><dd id="decision-code"></dd></div></dl></details>
         </div>
-        <div class="result-footnote"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4v6c0 4-8 8-8 8s-8-4-8-8V7l8-4Z"/><path d="m8 12 3 3 5-6"/></svg><p>AI hỗ trợ hiểu sự cố. Quy tắc kiểm soát mức đề xuất. Ca cần xem xét do người quyết định.</p></div>
+        <div class="result-footnote"><svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg><p>AI hỗ trợ hiểu sự cố. Quy tắc kiểm soát mức đề xuất. Người quyết định các ca cần xem xét.</p></div>
       </section>
     </div>
     <p id="live-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     <p id="live-error" class="sr-only" role="alert" aria-atomic="true"></p>
     <noscript><p class="demo-notice">Vui lòng bật JavaScript để sử dụng form và gọi API.</p></noscript>
   </main>
-  <footer class="site-footer"><span><strong>BDHT</strong> · AI20K Cohort 5 · L3A</span><span>Thiết kế cho một trải nghiệm hỗ trợ rõ ràng hơn.</span></footer>
+  <footer class="site-footer"><span><strong>BDHT</strong> · Hackathon Day 15 · L3A</span><span>Đề xuất trong phạm vi mô phỏng.</span></footer>
 </body>
 </html>

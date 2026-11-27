@@ -1,10 +1,10 @@
 const DECISIONS = Object.freeze({
-  PROPOSE_REFUND: { title: "Đề xuất hoàn tiền", symbol: "✓", tone: "positive" },
-  PROPOSE_VOUCHER: { title: "Đề xuất voucher", symbol: "✓", tone: "positive" },
-  ASK_INFO: { title: "Cần bổ sung thông tin", symbol: "?", tone: "neutral" },
-  ESCALATE: { title: "Cần nhân viên xem xét", symbol: "↗", tone: "neutral" },
-  NO_COMPENSATION: { title: "Chưa đủ điều kiện bồi thường", symbol: "i", tone: "neutral" },
-  REFUSE: { title: "Từ chối yêu cầu", symbol: "!", tone: "danger" },
+  PROPOSE_REFUND: { title: "Đề xuất hoàn tiền", icon: "check", tone: "positive" },
+  PROPOSE_VOUCHER: { title: "Đề xuất voucher", icon: "ticket", tone: "positive" },
+  ASK_INFO: { title: "Cần bổ sung thông tin", icon: "info", tone: "information" },
+  ESCALATE: { title: "Cần nhân viên xem xét", icon: "escalate", tone: "warning" },
+  NO_COMPENSATION: { title: "Chưa đủ điều kiện bồi thường", icon: "minus", tone: "neutral" },
+  REFUSE: { title: "Không thể xử lý yêu cầu này", icon: "close", tone: "danger" },
 });
 const ISSUE_TYPES = Object.freeze({ MISSING_ITEM: "Giao thiếu món", WRONG_ITEM: "Giao sai món", LATE_DELIVERY: "Giao hàng trễ", UNKNOWN: "Chưa xác định" });
 const SAMPLES = Object.freeze({
@@ -15,6 +15,7 @@ const SAMPLES = Object.freeze({
 });
 const currency = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" });
 const TIMEOUT_MS = 45000;
+const interfaces = new WeakMap();
 const isRecord = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
 const isText = (value) => typeof value === "string" && value.trim().length > 0;
 
@@ -55,7 +56,7 @@ export function processingMode(data) {
 }
 
 class RequestError extends Error {
-  constructor(kind, message) { super(message); this.kind = kind; }
+  constructor(kind, message, title) { super(message); this.kind = kind; this.title = title; }
 }
 
 export async function requestComplaint(payload, signal) {
@@ -70,7 +71,9 @@ export async function requestComplaint(payload, signal) {
       422: "Dữ liệu chưa phù hợp với yêu cầu của hệ thống. Hãy kiểm tra nội dung và số tiền.",
       429: "Hệ thống đang nhận nhiều yêu cầu. Vui lòng chờ một lúc rồi thử lại.",
     };
-    throw new RequestError("request-error", messages[response.status] || "Hệ thống tạm thời gặp sự cố. Vui lòng thử lại sau.");
+    const title = response.status === 400 || response.status === 422 ? "Thông tin gửi lên chưa hợp lệ"
+      : response.status === 429 ? "Hệ thống đang bận" : "Chưa nhận được kết quả";
+    throw new RequestError("request-error", messages[response.status] || "Hệ thống tạm thời gặp sự cố. Vui lòng thử lại sau.", title);
   }
   let data;
   try { data = await response.json(); }
@@ -80,6 +83,7 @@ export async function requestComplaint(payload, signal) {
 }
 
 export function createInterface(root = document) {
+  if (interfaces.has(root)) return interfaces.get(root);
   const el = (id) => root.getElementById(id);
   const form = el("complaint-form");
   const panel = el("result-panel");
@@ -100,8 +104,7 @@ export function createInterface(root = document) {
   function renderLoading(loading) {
     el("submit-button").disabled = loading;
     [...formFields, ...sampleButtons].forEach((item) => { item.disabled = loading; });
-    el("submit-label").textContent = loading ? "Đang kiểm tra..." : "Kiểm tra phương án";
-    el("submit-symbol").textContent = loading ? "…" : "→";
+    el("submit-button").classList.toggle("is-loading", loading);
     panel.setAttribute("aria-busy", String(loading));
   }
   function setState(state) {
@@ -110,9 +113,24 @@ export function createInterface(root = document) {
     el("loading-state").hidden = state !== "loading";
     el("result-content").hidden = !["success", "model-unavailable", "rules-unavailable"].includes(state);
     el("error-state").hidden = !["request-error", "invalid-response"].includes(state);
+    el("request-summary").hidden = ["idle", "validation-error"].includes(state);
+    if (!["success", "model-unavailable", "rules-unavailable"].includes(state)) delete panel.dataset.decision;
     el("status-badge").textContent = ({ idle: "Chưa gửi", "validation-error": "Kiểm tra đầu vào", loading: "Đang xử lý", success: "Có kết quả", "model-unavailable": "AI tạm gián đoạn", "rules-unavailable": "Chờ quy tắc", "request-error": "Lỗi yêu cầu", "invalid-response": "Phản hồi chưa hợp lệ" })[state];
   }
-  function updateCount() { el("character-count").textContent = `${Array.from(el("message").value).length} / 500`; }
+  function updateCount() {
+    const count = Array.from(el("message").value).length;
+    const counter = el("character-count");
+    const level = count >= 500 ? "limit" : count >= 450 ? "near" : "normal";
+    counter.textContent = `${count} / 500`;
+    counter.dataset.level = level;
+    counter.setAttribute("aria-label", `${count} trên 500 ký tự${level === "limit" ? ", đã đạt giới hạn" : level === "near" ? ", gần đạt giới hạn" : ""}`);
+  }
+  function revealPanel() {
+    const view = root.defaultView;
+    if (view.matchMedia("(max-width: 780px)").matches && panel.getBoundingClientRect().top > view.innerHeight * 0.25) {
+      panel.scrollIntoView({ behavior: view.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    }
+  }
   function clearSampleSelection() { sampleButtons.forEach((button) => button.setAttribute("aria-pressed", "false")); }
   function resetUI() {
     sequence += 1;
@@ -120,7 +138,12 @@ export function createInterface(root = document) {
     renderLoading(false); clearValidation(); clearSampleSelection();
     formFields.forEach((field) => { field.value = ""; });
     updateCount();
-    el("result-content").querySelectorAll("dd, #reply, #proposed-amount, #decision-title").forEach((node) => { node.textContent = ""; });
+    el("result-content").querySelectorAll("dd, #reply, #proposed-amount, #decision-title").forEach((node) => {
+      if (!node.contains(el("processing-mode"))) node.textContent = "";
+    });
+    // Keep the processing badge node intact when clearing the surrounding facts.
+    el("processing-mode").textContent = "";
+    el("request-order").textContent = ""; el("request-message").textContent = "";
     root.querySelector(".technical-details").open = false;
     setState("idle"); announce("Đã làm mới form.");
   }
@@ -136,12 +159,20 @@ export function createInterface(root = document) {
     if (!validateResponse(data)) throw new RequestError("invalid-response", "Phản hồi chưa đủ dữ liệu hợp lệ để hiển thị phương án.");
     const decision = DECISIONS[data.decision];
     el("decision-title").textContent = decision.title;
-    el("decision-symbol").textContent = decision.symbol;
+    el("decision-icon").setAttribute("href", `#icon-${decision.icon}`);
     el("decision-banner").dataset.tone = decision.tone;
+    panel.dataset.decision = data.decision;
+    el("proposal").dataset.proposal = String(["PROPOSE_REFUND", "PROPOSE_VOUCHER"].includes(data.decision));
+    el("proposal-label").textContent = data.decision === "PROPOSE_VOUCHER" ? "Giá trị voucher đề xuất" : "Số tiền đề xuất";
+    el("simulation-label").textContent = data.decision === "ESCALATE" ? "Chuyển nhân viên mô phỏng · chưa thực hiện chi trả" : "Đề xuất trong mô phỏng · chưa thực hiện chi trả";
+    el("edit-button").hidden = data.decision !== "ASK_INFO";
     el("proposed-amount").textContent = currency.format(data.proposed_amount_vnd);
     el("reply").textContent = data.reply;
     el("issue-type").textContent = ISSUE_TYPES[data.issue_type];
     el("processing-mode").textContent = processingMode(data);
+    el("processing-mode").dataset.mode = data.reason_code === "MODEL_UNAVAILABLE" ? "unavailable"
+      : data.meta?.mode === "mock" ? "mock" : data.reason_code === "RULES_UNAVAILABLE" ? "unavailable"
+        : data.meta?.mode === "live" && data.meta.ai_used === true ? "live" : "neutral";
     el("policy-rule").textContent = data.policy_ref ? `${data.policy_ref.rule_id} · Quy tắc giả lập` : "Không có tham chiếu quy tắc";
     el("policy-version-row").hidden = data.policy_ref === null;
     el("policy-version").textContent = data.policy_ref?.version || "";
@@ -156,9 +187,9 @@ export function createInterface(root = document) {
     setState(unavailable || "success");
     announce(`${decision.title}. Số tiền đề xuất ${currency.format(data.proposed_amount_vnd)}. ${processingMode(data)}.`);
   }
-  function renderError(kind, message) {
+  function renderError(kind, message, title) {
     setState(kind); el("error-message").textContent = message;
-    el("error-title").textContent = kind === "invalid-response" ? "Chưa thể hiển thị phương án" : "Chưa nhận được kết quả";
+    el("error-title").textContent = title || (kind === "invalid-response" ? "Chưa thể hiển thị phương án" : "Chưa nhận được kết quả");
     announce(message, true);
   }
   function collectInput() { return { orderId: el("order-id").value, message: el("message").value, amount: el("requested-amount").value }; }
@@ -179,30 +210,48 @@ export function createInterface(root = document) {
     const id = ++sequence; const controller = new AbortController();
     activeRequest = { id, controller }; let timedOut = false;
     const timer = setTimeout(() => { timedOut = true; controller.abort(); }, TIMEOUT_MS);
+    el("request-order").textContent = input.orderId || "Chưa có mã đơn";
+    el("request-message").textContent = input.message.trim();
     renderLoading(true); setState("loading"); announce("Đang kiểm tra phương án xử lý...");
     try {
       const data = await requestComplaint(buildPayload(input), controller.signal);
       if (id !== sequence) return;
       renderResponse(data);
       el("decision-title").focus({ preventScroll: true });
+      revealPanel();
     } catch (error) {
       if (id !== sequence) return;
       const message = timedOut ? "Quá thời gian chờ phản hồi. Vui lòng thử lại sau."
         : error instanceof RequestError ? error.message : "Không thể kết nối với hệ thống. Hãy kiểm tra kết nối rồi thử lại.";
-      renderError(error instanceof RequestError ? error.kind : "request-error", message);
+      const title = timedOut ? "Phản hồi mất nhiều thời gian" : error instanceof RequestError ? error.title : "Không thể kết nối";
+      renderError(error instanceof RequestError ? error.kind : "request-error", message, title);
+      el("error-title").focus({ preventScroll: true });
+      revealPanel();
     } finally {
       clearTimeout(timer);
       if (id === sequence) { activeRequest = null; renderLoading(false); }
     }
   });
   form.addEventListener("reset", (event) => { event.preventDefault(); resetUI(); });
+  el("retry-button").addEventListener("click", () => { if (!activeRequest) form.requestSubmit(); });
+  el("edit-button").addEventListener("click", () => {
+    const field = el("order-id").value ? el("message") : el("order-id");
+    field.focus({ preventScroll: true });
+    field.scrollIntoView({ behavior: root.defaultView.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
+  });
   sampleButtons.forEach((button) => button.addEventListener("click", () => fillSample(button.dataset.sample)));
   formFields.forEach((field) => field.addEventListener(field.tagName === "SELECT" ? "change" : "input", () => {
     clearValidation(); clearSampleSelection(); updateCount();
-    if (!activeRequest) { setState("idle"); announce("Thông tin đã thay đổi. Hãy kiểm tra lại phương án."); }
+    if (!activeRequest) {
+      const hadFeedback = panel.dataset.state !== "idle";
+      setState("idle");
+      if (hadFeedback) announce("Thông tin đã thay đổi. Hãy kiểm tra lại phương án.");
+    }
   }));
   updateCount();
-  return { renderResponse, resetUI, fillSample };
+  const instance = { renderResponse, resetUI, fillSample };
+  interfaces.set(root, instance);
+  return instance;
 }
 
 if (typeof document !== "undefined" && document.getElementById("complaint-form")) createInterface();

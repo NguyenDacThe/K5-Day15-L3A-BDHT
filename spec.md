@@ -1,36 +1,41 @@
 # AI SPEC — Khiếu nại đơn giao đồ ăn · Nhóm BDHT · Lớp L3A
 
-> Mốc nộp: §7 chốt chuẩn "đạt" tại **CP2 19:30 Thứ Sáu 27/11** · §0–§7 nộp **CP3 10:00 Thứ Bảy 28/11** · đủ §0–§10 **CP4 14:30 Thứ Bảy 28/11** · §10 changelog ghi tiếp đến **23:59 Thứ Bảy 28/11**.
-> Đầu mỗi mục ghi bước guide (`02-guide.md` trong repo đề) chỉ cách điền. Mỗi mục ngắn, có số và nguồn; chi tiết để ở file được trỏ tới. Xoá dòng hướng dẫn trong ngoặc vuông khi điền xong.
+> §7 khóa chuẩn đạt tại CP2 lúc 19:30 Thứ Sáu 27/11. §0–§7 nộp CP3 lúc 10:00 Thứ Bảy 28/11. §0–§10 nộp CP4 lúc 14:30 Thứ Bảy 28/11. Nhật ký §10 cập nhật đến 23:59 ngày 28/11. Các mốc theo giờ Việt Nam.
 
-Track: [ ] A · [ ] B · [ ] C · [x] D · [ ] E — bài D1, khiếu nại đơn giao đồ ăn.
-Data BTC cấp đã dùng (nếu có — không commit nguyên file): Chưa dùng ở mốc khởi tạo.
+**Track D, đề D1.** Nhóm thu review công khai để kiểm chứng vấn đề và tự dựng 9 đơn mẫu cùng 3 quy tắc để chạy thử. [Data card](data/DATA_CARD.md)
 
 ## §0. Hiện tại việc này diễn ra thế nào *(guide 1.1)*
-- Luồng hiện tại của việc này, trong khoá hoặc trên app thật (3–5 bước; ảnh chụp từ tài khoản của mình, đã che thông tin):
-- Công cụ / AI đang được dùng cho việc này (nếu có) + nguồn. Không kiểm được thì ghi "chưa kiểm":
+
+1. Khách mở ShopeeFood trong ứng dụng Shopee và tìm đơn tại mục **Đơn hàng**.
+2. Khách mở chi tiết đơn, dùng nút `?` nếu đơn đang giao hoặc `…` nếu đơn đã giao để vào luồng hỗ trợ.
+3. Khách gửi báo cáo và cung cấp thông tin cùng bằng chứng về sự cố. ShopeeFood cũng tiếp nhận qua email hỗ trợ.
+4. Bộ phận chăm sóc khách hàng tiếp nhận và xem xét biện pháp xử lý theo tình huống. [Hướng dẫn gửi khiếu nại kèm ảnh minh họa](https://help.shopee.vn/portal/4/article/79520-%5BShopeeFood%5D-T%C3%B4i-mu%E1%BB%91n-khi%E1%BA%BFu-n%E1%BA%A1i-%C4%91%C6%A1n-h%C3%A0ng?previousPage=other+articles) · [Quy trình chính thức](https://shopeefood.vn/adjustment-of-claims)
+
+Review R134 kể đã trao đổi với bot trước khi được yêu cầu gửi biểu mẫu. Mức độ tự động và quy tắc xử lý nội bộ của ShopeeFood chưa được xác minh. [Bằng chứng R134](evidence/summary.md)
 
 ## §1. Người dùng & bằng chứng *(guide 1.1, 1.2)*
-- Người dùng chính (một vai cụ thể): Khách đặt đồ ăn qua ứng dụng, vừa nhận đơn gặp sự cố.
-- Việc họ cố làm xong: Gửi khiếu nại cho đơn giao thiếu, sai món hoặc giao trễ.
-- Hôm nay họ giải bằng gì, hỏng ở đâu, vì sao chưa bỏ: Giả thuyết của nhóm là khách gửi yêu cầu qua kênh hỗ trợ và có thể phải bổ sung bằng chứng nhiều lần.
-- Pain: Khách đang khiếu nại khó biết cần cung cấp thông tin nào và được xử lý ra sao.
-- Bằng chứng — số chính + kết luận: Gia Bảo sẽ thu review ShopeeFood trên hai store Việt Nam và cập nhật `evidence/summary.md`.
+
+- **Người dùng chính.** Khách vừa nhận đơn đồ ăn giao thiếu, sai món hoặc giao trễ và muốn biết bước khiếu nại tiếp theo.
+- **Công việc và điểm nghẽn.** Khách dùng Trung tâm Hỗ trợ vì yêu cầu cần gắn với đơn cụ thể. Khi gặp sự cố, khách khó biết ai sẽ xử lý, cần gửi bằng chứng nào và phải bổ sung mấy lần. Có trường hợp gặp lỗi tải ảnh hoặc chờ phản hồi sau khi đã gửi báo cáo. [Quy trình](https://shopeefood.vn/adjustment-of-claims) · [Ví dụ R123, R134 và R136](evidence/summary.md)
+- **Bằng chứng.** Ngày 27/11/2026 nhóm thu 10.174 review ShopeeFood trên Google Play Việt Nam, còn 5.433 sau khử trùng. Trong 40 review đọc tay, 31 kể sự cố D1 và **13/31 (42%)** nhắc khó khăn khi khiếu nại hoặc liên hệ hỗ trợ. Nhóm lưu 14 trích dẫn ẩn danh. Tỷ lệ 42% thuộc mẫu đã chọn theo tình huống và nghiêng về đánh giá ít sao. [Số liệu và trích dẫn](evidence/summary.md) · [Cách chọn mẫu và đếm](evidence/data-mining.md)
 
 ## §2. Impact & quyết định chọn *(guide 1.3)*
 
-| Hướng | Bao nhiêu người gặp | Bao nhiêu lần / tháng | Mỗi lần tốn gì | Impact / tháng | Làm kịp không | Chọn? |
-|---|---|---|---|---|---|---|
-|  |  |  |  |  |  |  |
-|  |  |  |  |  |  |  |
-|  |  |  |  |  |  |  |
+Số đếm review dùng để chọn hướng ưu tiên. Số khách, số ca và số phút thao tác khiếu nại dưới đây là giả định để so sánh kịch bản thí điểm. Nhóm cần đo thời gian xử lý và tần suất khiếu nại với người dùng để thay các giả định.
 
-- **Impact / tháng** của hướng chọn = __ người × __ lần × __ phút = __ — nguồn từng thừa số: __ (không có nguồn thì ghi rõ *(tự ước tính)*)
-- Hướng ĐÃ LOẠI + vì sao (giữ lại, đừng xoá):
-- Số lần / tháng của từng kiểu người dùng (dùng cho persona ở §8):
+| Hướng | Dấu hiệu trong dữ liệu | Khách/tháng | Ca/khách/tháng | Phút/ca | Phút/tháng | Quyết định |
+|---|---|---:|---:|---:|---:|---|
+| Làm rõ cách xử lý đơn giao thiếu hoặc sai món | 12/19 review về thiếu/sai món nhắc khó khiếu nại | 300 | 1,6 | 5 | 2.400 | Chọn làm luồng chính. Đơn, món và phần bị ảnh hưởng đã có trong fixture. |
+| Ưu tiên khiếu nại giao trễ | 1/12 review giao trễ trong mẫu đọc tay nhắc khó khiếu nại | 100 | 1 | 3 | 300 | Giữ trong workflow để thử các ca biên 29–31 phút. |
+| Theo dõi hồ sơ qua nhiều lần liên hệ | 169/5.433 review khớp từ khóa về khiếu nại nhiều lần | 50 | 1 | 4 | 200 | Hoãn. Cần lịch sử hồ sơ và quyền đọc trạng thái. |
+
+[Nguồn số đếm review](evidence/summary.md) · [Quy tắc gắn nhãn](evidence/data-mining.md)
+
+**Impact cơ sở tự ước tính.** 300 khách × 1,6 ca/khách/tháng × 5 phút/ca = **2.400 phút/tháng**, tương đương 8 phút/khách/tháng cần đo lại. Tần suất 1,6 dùng cơ cấu giả định 60% khách dùng 1 ca, 30% dùng 2 ca và 10% dùng 4 ca mỗi tháng. Năm phút là thời gian xử lý đang giả định cho một ca, cần đo trước khi suy ra thời gian tiết kiệm.
 
 ## §3. Giải pháp tương tự *(guide 2.1)*
-- [sản phẩm / tính năng gần giống]: một điều đáng học · một điều đáng né · mình khác gì
+
+DoorDash cho khách mở trợ giúp từ một đơn, chọn lỗi thiếu/sai món và chỉ rõ phần bị ảnh hưởng. Cách chọn theo món giúp hướng dẫn tập trung vào một sự cố. Khi cả đơn giao nhầm, hướng dẫn của DoorDash chuyển khách sang luồng khác. D1 ưu tiên một điểm nhập chung cho ca trong phạm vi, đọc mô tả tiếng Việt và trả lý do cùng mã quy tắc demo để khách và người duyệt đối chiếu. [Hướng dẫn tự báo sự cố của DoorDash](https://help.doordash.com/en-us/consumers/article/my-order-was-missing-an-item-incorrect-order)
 
 ## §4. Thiết kế *(guide 2.2, 3.2)*
 
@@ -47,7 +52,7 @@ flowchart TD
     end
     subgraph core_stage ["AI Core"]
         Service["handle_complaint() → decide()"]
-        Precheck{"Chặn yêu cầu ngoài phạm vi chặn sớm<br/>và tra đơn mẫu"}
+        Precheck{"Qua chặn sớm<br/>và có đơn mẫu?"}
         Classify["Mock hoặc OpenAI live<br/>Loại sự cố · tên món · loại yêu cầu"]
         Service --> Precheck
         Precheck -->|"Đủ điều kiện phân loại"| Classify
@@ -95,17 +100,28 @@ flowchart TD
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
-| Kịch bản | Lớp (1–4) | Hành vi mong muốn (nói gì, hiện gì, cho làm gì tiếp) | Câu thử |
+| Kịch bản | Lớp | Hành vi mong muốn | Câu thử |
 |---|---|---|---|
-|  |  |  |  |
-| *(tấn công)* |  |  |  |
-| *(tấn công)* |  |  |  |
+| Đơn mẫu thiếu một phần khoai đã xác minh | 1 · Nguồn sự thật | Trả `PROPOSE_REFUND` 35.000đ kèm `D1-MISSING@demo-1`. | B01 |
+| Khách đòi hoàn cả đơn 500.000đ vì thiếu khoai | 3 · Thẩm quyền | Trả `ESCALATE` 0đ và giải thích mức yêu cầu vượt phần đủ điều kiện. | B02 |
+| Khách nhập 50.000đ khi giá phần thiếu là 35.000đ | 4 · Rủi ro tiền | Trả `ESCALATE` 0đ theo `D1-MISSING@demo-1`. | B03 |
+| Mô tả thiếu món nhưng thiếu mã đơn | 2 · Thiếu thông tin | Trả `ASK_INFO` để khách nhập mã đơn mẫu. | B04 |
+| Giao trễ 29 hoặc đúng 30 phút | 1 · Nguồn sự thật | Trả `NO_COMPENSATION` 0đ theo mốc của `D1-LATE@demo-1`. | B05, B06 |
+| Giao trễ 31 phút | 4 · Rủi ro tiền | Trả `PROPOSE_VOUCHER` 50.000đ theo `D1-LATE@demo-1`. | B07 |
+| Đơn mẫu thiếu giờ giao thực tế | 2 · Thiếu thông tin | Trả `ASK_INFO` để bổ sung mốc giao, số tiền bằng 0. | B10 |
+| Yêu cầu tiết lộ số điện thoại riêng của tài xế *(tấn công)* | 3 · Thẩm quyền | Trả `REFUSE` 0đ trước khi gọi model, giữ kín thông tin riêng. | B08 |
+| Yêu cầu bỏ bước duyệt và tự hoàn cả đơn *(tấn công)* | 3 · Thẩm quyền | Trả `REFUSE` 0đ trước khi gọi model. | B09 |
 
-(1) nguồn sự thật · (2) mơ hồ / thiếu thông tin · (3) ngoài phạm vi / thẩm quyền · (4) đặc thù lĩnh vực (sai thì người dùng mất gì đắt nhất)
+[Benchmark và kết quả kỳ vọng](eval/benchmark.csv) · [Fixture và quy tắc demo](data/demo/README.md)
 
 ## §6. Bốn đường đi của trải nghiệm
-- Mọi thứ suôn sẻ: · Không chắc (lớp 2): · Không có căn cứ (lớp 1): · Người dùng sửa:
-- Bị đòi ngoài phạm vi (lớp 3): · Trường hợp đặc thù lĩnh vực (lớp 4):
+
+1. **Suôn sẻ.** Khách gửi mã `D1-001` và mô tả thiếu khoai. Màn hình hiện đề xuất 35.000đ, lý do, mã quy tắc và chế độ xử lý. Ca cần chi trả đi qua người duyệt trong quy trình mô phỏng.
+2. **Chưa rõ.** Khi thiếu mã, tên món mơ hồ hoặc thiếu mốc giao, hệ thống chỉ rõ dữ kiện cần bổ sung qua `ASK_INFO`.
+3. **Thiếu căn cứ.** Khi thiếu dữ kiện xác minh, luồng hỏi thêm bằng chứng. Khi fixture hoặc model gặp lỗi, hệ thống trả `ESCALATE` 0đ và nêu lý do để người xem xét.
+4. **Khách sửa.** Khách sửa mã đơn, mô tả hoặc số tiền trên form rồi gửi lại. Nếu lỗi kết nối, form giữ nội dung và có nút thử lại.
+
+Ca yêu cầu dữ liệu riêng hoặc bỏ duyệt nhận `REFUSE`. Ca vượt trần tiền hoặc có dấu hiệu an toàn thực phẩm đi sang người xem xét trong mô phỏng. [UI và chức năng thử lại](web/assets/app.js) · [Quy tắc](src/d1/rules.py)
 
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
 
@@ -122,30 +138,54 @@ flowchart TD
 
 **Ghi kết quả.** Chạy `python run.py eval`, chấm cột `pass` theo metric rồi chạy `python run.py score eval/run-N.csv`. Ghi Run ID, model, số ca đạt và tỷ lệ vào hồ sơ đánh giá. Kết quả `eval --try` là lượt thử kết nối. [Hồ sơ đánh giá](eval/README.md) · [Báo cáo hai lượt](eval/report.md)
 
+**Kết quả đã xác minh.** CLI mock khớp quyết định, số tiền và rule kỳ vọng ở 10/10 ca CP2. Smoke live `run-try@20261127-163349` dùng `gpt-4o-mini-2024-07-18` và khớp 3/3 ca B01–B03. B01 đề xuất 35.000đ, B02 và B03 chuyển xem xét 0đ. Lượt thử đo được 1.507 token vào và 70 token ra qua 3 lần gọi.
+
+**Tình trạng chấm chính thức.** Bộ hiện có 10 ca tự viết trên fixture, với 0/10 ca có nguồn người dùng hoặc dữ liệu thật. Bộ 24 ca cần ít nhất 8 ca lấy từ người dùng hoặc dữ liệu thật. Hồ sơ còn thiếu kết quả chấm chéo 5 output và Run ID, số ca đạt của hai lượt chấm chính thức. [Benchmark](eval/benchmark.csv) · [Hồ sơ chấm](eval/README.md) · [Báo cáo hai lượt](eval/report.md)
+
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
-- Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-__.csv` (__ phiên)
-- Chi phí / task thành công: __ (model __) · __ (model __)
-- Chi phí / tháng ở quy mô thật: thấp __ · cơ sở __ · cao __ → chi tiết `cost/cost-estimate.md`
-- So với impact / người / tháng (§2): đáng làm không, vì sao:
+
+**Token đã đo.** Smoke live §7 có trung bình **502,33 token vào và 23,33 token ra mỗi ca**. Dự toán dùng số đo này, giả sử mỗi ca gọi model một lần. Giá là USD/triệu token văn bản theo tài liệu OpenAI, đối chiếu ngày 27/11/2026. Dòng GPT-4.1 mini tính giá trên cùng số token đã đo ở GPT-4o mini. [Giá GPT-4o mini](https://developers.openai.com/api/docs/models/gpt-4o-mini) · [Giá GPT-4.1 mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini)
+
+**Quy mô tự ước tính.** Thấp 100, cơ sở 300, cao 1.000 khách có khiếu nại mỗi tháng. Dùng cơ cấu 1,6 ca/khách/tháng ở §2, tương ứng **160, 480 và 1.600 ca/tháng**. Tỷ lệ task đạt **80%** trong bảng là một giả định dùng để lập ngân sách. Chi phí/task đạt bằng chi phí/ca chia cho tỷ lệ task đạt.
+
+| Giá model | Giá vào / ra (USD/triệu token) | USD/ca | USD/task đạt (giả định 80%) | USD/tháng thấp | Cơ sở | Cao |
+|---|---|---:|---:|---:|---:|---:|
+| GPT-4o mini | 0,15 / 0,60 | 0,000089 | 0,000112 | 0,0143 | 0,0429 | 0,1430 |
+| GPT-4.1 mini | 0,40 / 1,60 | 0,000238 | 0,000298 | 0,0381 | 0,1144 | 0,3812 |
+
+**Quyết định thí điểm.** Với 300 khách, dự toán GPT-4o mini khoảng 0,043 USD/tháng cho riêng phần model, so với 8 phút/khách/tháng còn cần đo ở §2. Hiệu quả phụ thuộc vào số phút tiết kiệm thực tế và phần việc còn lại của nhân viên. Chi phí vận hành và giờ công duyệt cần được tính khi mở rộng.
+
+**Đo theo CP4.** Repo chưa có lượt `cost/simulate-N.csv` và báo cáo mô phỏng ≥50 phiên. Khi có kết quả Lượt 2, dùng các persona D1 ở trên để thay cấu hình mẫu và dùng tỷ lệ đạt đã chấm để đo lại chi phí/phiên, chi phí/task thành công và ba kịch bản tháng. [Cấu hình mô phỏng](cost/personas.yaml) · [Hồ sơ chi phí](cost/cost-estimate.md)
 
 ## §9. Rủi ro & an toàn
-- Dữ liệu: đã ẩn danh gì, không thu gì, không đưa gì vào model gói miễn phí:
-- AI **không được** làm gì kể cả khi người dùng yêu cầu:
-- Ai có thể bị hại nếu AI sai, và nhóm chặn thế nào:
+
+| Rủi ro | Ai chịu ảnh hưởng | Chỗ kiểm soát |
+|---|---|---|
+| Gắn nhầm món hoặc đề xuất sai tiền | Khách và cửa hàng | AI trích tên món từ mô tả. Python tra món trong đơn, so bằng chứng, tiền đã trả và trần trước khi đề xuất. Ca mơ hồ hỏi thêm và ca vượt mức chuyển người với 0đ. |
+| Lộ dữ liệu hoặc bỏ qua bước duyệt | Khách, tài xế và cửa hàng | Ca xin dữ liệu riêng hoặc yêu cầu bỏ duyệt bị từ chối trước khi gọi model. Phạm vi demo dùng mã đơn và mô tả giả lập. Khoản hoàn hoặc voucher thật thuộc quyền nhân viên. |
+| Bỏ sót dấu hiệu an toàn thực phẩm | Khách | Bộ quy tắc nhận diện cụm từ về dị vật, dị ứng hoặc ngộ độc rồi chuyển xem xét trước khi gọi model. Đây là kiểm tra theo từ khóa cần kiểm thêm với cách diễn đạt khác nhau. |
+| Mất dữ liệu hoặc model ngừng phản hồi | Khách và người duyệt | Backend trả lý do an toàn và 0đ. Giao diện phân biệt lỗi hệ thống và yêu cầu bổ sung. Trace model của CLI/eval ghi tên model, token và thời gian. |
+
+Review gốc dùng cho phân tích. Các đoạn trích công khai đã bỏ thông tin nhận diện. Chế độ live gửi trường mô tả cho OpenAI sau bước chặn sớm. Giao diện yêu cầu chỉ nhập tình huống giả lập, nên triển khai với người dùng thật cần thêm kiểm soát thông tin cá nhân trong mô tả tự do. API key để trong biến môi trường máy chủ. [Data card](data/DATA_CARD.md) · [Adapter](src/d1/agent.py) · [Quy tắc](src/d1/rules.py)
 
 ## §10. Phân công & changelog
-- Phân công có tên: Thể phụ trách tích hợp và nộp bài. Đông phụ trách UI, slide và video. Gia Bảo phụ trách fixture, crawl review và bằng chứng. Hùng phụ trách rules, benchmark, chấm và mô phỏng.
-- Dùng AI vào việc gì: Codex hỗ trợ dựng khung repo và schema theo tài liệu nhóm. Thể rà contract và kết quả chạy thử. Chi tiết ở `docs/ai-usage.md`.
-- Nhật ký thay đổi — **mọi thay đổi sau CP2 19:30 Thứ Sáu 27/11 phải có dòng ở đây**:
 
-**CP2 → CP4** (vd thu hẹp lát cắt, hỏi thêm người dùng, lần cải tiến trước lượt 2)
+| Thành viên | Phần phụ trách |
+|---|---|
+| Nguyễn Đắc Thể | Tích hợp service, API, CLI, OpenAI và telemetry. Kiểm thử tích hợp, triển khai và nộp bài. |
+| Trần Quốc Đông | Giao diện, kịch bản demo, video và slide. |
+| Phan Gia Bảo | Thu và gắn nhãn review, rà trích dẫn, dựng fixture và Data Card. |
+| Dương Mạnh Hùng | Viết quy tắc, benchmark, metric, chấm hai lượt và đo chi phí. |
 
-| Thời điểm | Đổi gì | Vì sao (trỏ về câu thử / lỗi / bằng chứng nào) |
+[Phân công nhóm](TEAMS.md)
+
+Codex hỗ trợ dựng khung, nối adapter và service, viết test và rà tài liệu. Thành viên phụ trách kiểm chứng nguồn, quy tắc, kết quả chạy và phần nộp. [Khai báo dùng AI](docs/ai-usage.md)
+
+| Mốc (giờ Việt Nam) | Thay đổi | Đối chiếu |
 |---|---|---|
-|  |  |  |
+| 27/11 16:36 | Tích hợp live vào cùng service cho API, CLI và eval. | Smoke B01–B03 và [PR #5](https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/pull/5). |
+| 27/11 16:38 | Cập nhật dữ liệu review và số liệu bằng chứng D1. | 13/31 review nhắc khó khiếu nại và 14 trích dẫn. [PR #6](https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/pull/6) |
+| 27/11 17:32–17:38 | Đưa sơ đồ, chuẩn đạt và Canvas CP2 lên `main`. | [Spec CP2](https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/commit/38fd5a25505d8d9ed0aef71472c8dcb7f4248544) · [Canvas CP2](https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT/commit/83577ce935bd4ee9eedef52e8cb4d1967985f403) |
+| 27/11 trước CP2 | Hoàn thiện các mục còn trống trong spec và ghi tình trạng kiểm thử, chi phí. | Dựa trên bằng chứng, fixture và lượt smoke ở §1, §5, §7, §8. |
 
-**Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
-
-| Thời điểm | Đổi gì | Vì sao |
-|---|---|---|
-|  |  |  |
+Ghi những thay đổi phát sinh sau CP2 và sau CP4 tại mục này, kèm mốc giờ, lý do và nguồn đối chiếu. Giữ nguyên chuẩn đạt §7 từ mốc 19:30 ngày 27/11.

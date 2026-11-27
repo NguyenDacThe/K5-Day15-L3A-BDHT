@@ -1,27 +1,6 @@
-# Khảo sát — mẫu form và cách lưu kết quả
+# Tạo và phát khảo sát D1 — ShopeeFood
 
-> Điền ở guide bước 1.2. Không khảo sát thì xoá thư mục này.
-> Ngưỡng: **≥20 người ngoài nhóm, đúng người dùng**, giữ log đủ câu hỏi và từng câu trả lời.
-
-## Mẫu form (chép sang Google Form, sửa [việc] theo lát cắt)
-
-8–10 câu, hỏi **hành vi đã xảy ra**, không hỏi "có thích không".
-
-| # | Câu hỏi | Kiểu trả lời |
-|---|---|---|
-| 1 | Bạn là: học viên L3A / L3B / lab coach / TA / giảng viên / khác | Chọn một |
-| 2 | Lần gần nhất bạn [việc] là khi nào? | Hôm nay · tuần này · tuần trước · lâu hơn · chưa bao giờ |
-| 3 | Trong 1 tuần qua, bạn [việc] mấy lần? | Số |
-| 4 | Lần gần nhất đó, bạn đã làm thế nào? | Chọn nhiều (tua video · hỏi bạn · hỏi trợ giảng · ChatGPT riêng · bỏ qua · khác) |
-| 5 | Lần đó mất khoảng bao lâu? | Dưới 5' · 5–15' · 15–30' · trên 30' |
-| 6 | Lần đó có xong việc không? | Xong · xong một phần · bỏ |
-| 7 | Điều gì khó chịu nhất ở lần đó? | Đoạn văn |
-| 8 | (tuỳ chọn) Bạn có sẵn lòng cho nhóm hỏi thêm 10 phút không? | Có — cách liên hệ (không bắt buộc) / Không |
-
-Không thu tên, email, mã học viên trong form (trừ câu 8 nếu người trả lời tự để lại).
-
-## Lưu vào thư mục này
-
-- `questions.md` — nguyên bộ câu hỏi + kênh đã gửi + giờ mở / chốt.
-- `results.csv` — bản xuất **đã xoá** mọi cột nhận ra người trả lời. Bản gốc còn thông tin cá nhân thì **không** commit.
-- Số chính + ≥3 câu trả lời nguyên văn → chép vào `evidence/summary.md`. Dưới khoảng 10 người thì chỉ ghi x/n, không ghi %.
+1. Mở [Google Apps Script](https://script.google.com/home/projects/create), dán mã từ [create-forms.gs](create-forms.gs), lưu rồi chạy `createD1ResearchForms()` một lần. Cấp quyền tạo form trong tài khoản Google của bạn khi được yêu cầu.
+2. Mở hai liên kết chỉnh sửa trong Nhật ký thực thi. Đối chiếu bản khảo sát với [questions.md](questions.md), xem thử các nhánh sàng lọc, rồi xuất bản để phát link khảo sát. Phiếu phỏng vấn dùng cho người hỏi trong nhóm, kèm [mẫu ghi chép](../interviews/TEMPLATE.md).
+3. Ghi kênh phát, giờ mở và giờ chốt trong [questions.md](questions.md). Thu ít nhất 20 câu trả lời hợp lệ từ người ngoài nhóm từng gặp sự cố khi đặt ShopeeFood trong 30 ngày qua.
+4. Sau khi thu thập, lưu từng câu trả lời đã ẩn danh vào `results.csv`. Dùng số đếm thực tế và câu trả lời đã ẩn danh để cập nhật [tổng hợp bằng chứng](../summary.md).

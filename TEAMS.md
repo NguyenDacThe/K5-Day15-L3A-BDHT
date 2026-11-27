@@ -6,15 +6,15 @@
 
 - Tên nhóm: BDHT
 - Lớp: L3A
-- Track: D1
+- Track: D
 - Link repo: https://github.com/NguyenDacThe/K5-Day15-L3A-BDHT.git
 
 | STT | Họ và tên | Mã học viên | Vai trò | Phần việc chính |
 |---|---|---|---|---|
-| 1 | Nguyễn Đắc Thể | 2A202603529 | Đội trưởng | ____ |
-| 2 | Trần Quốc Đông | 2A202603643 | Thành viên | ____ |
-| 3 | Dương Mạnh Hùng | 2A202603431 | Thành viên | ____ |
-| 4 | Phan Gia Bảo | 2A202603562 | Thành viên | ____ |
+| 1 | Nguyễn Đắc Thể | 2A202603529 | Đội trưởng | Contract, AI Core, API, GitHub, Vercel và nộp bài |
+| 2 | Trần Quốc Đông | 2A202603643 | Thành viên | Giao diện khiếu nại, slide và video demo |
+| 3 | Dương Mạnh Hùng | 2A202603431 | Thành viên | Quy tắc bồi thường, benchmark, chấm và mô phỏng chi phí |
+| 4 | Phan Gia Bảo | 2A202603562 | Thành viên | Crawl review ShopeeFood, tổng hợp bằng chứng ẩn danh, dựng đơn và chính sách demo |
 
 **Quy tắc điền**
 - **Lớp:** `L3A` hoặc `L3B`. **Track:** một chữ `A` (EdTech), `B` (Y tế), `C` (Du lịch), `D` (Thương mại điện tử), `E` (Tài chính) hoặc `F` (Làn khác). **Link repo:** link GitHub công khai của nhóm.

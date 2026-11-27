@@ -24,9 +24,10 @@ Khung chỉ dùng thư viện chuẩn của Python. Thêm thư viện thì ghi v
 
 | File | Ai sửa | Hợp đồng |
 |---|---|---|
-| `codebase/agent.py` | nhóm | `answer(text) -> {"output": str}` — luồng chính, đúng hình dạng ở `spec.md` §4 |
-| `codebase/ai.py` | nhóm | `call_model(system, user) -> {"text", "model", "tokens_in", "tokens_out"}`, giữ `@model_call`. Token lấy từ `usage` của API, không ước lượng |
-| `codebase/tools.py` | nhóm | mỗi công cụ một hàm có `@tool`, docstring: tên · input · output · có tác động ra ngoài không |
+| `app.py`, `src/d1/contracts.py`, `src/d1/service.py`, `src/d1/agent.py`, `codebase/agent.py` | Thể | API và `answer(text) -> {"output": str}` gọi cùng service. Khi nối model, tích hợp trace của starter và lấy token từ `usage` của API |
+| `web/`, `demo/`, `slides/` | Đông | UI cùng origin và tài liệu demo |
+| `data/`, `scripts/data/`, `evidence/` | Gia Bảo | Fixture demo, collector local và bằng chứng đã ẩn danh |
+| `src/d1/repository.py`, `src/d1/rules.py`, `src/d1/eval_runner.py`, `eval/` | Hùng | Tra fixture, quyết định và đánh giá theo format BTC |
 | `codebase/tracing.py`, `eval/run_eval.py`, `cost/simulate.py`, `run.py` | **khung — không sửa** | ghi trace, chạy bộ câu thử, mô phỏng chi phí |
 
 ## Luật — agent KHÔNG được làm
@@ -40,6 +41,5 @@ Khung chỉ dùng thư viện chuẩn của Python. Thêm thư viện thì ghi v
 
 ## Quy ước của nhóm
 
-- Ngôn ngữ trả lời người dùng: __
-- Phong cách code / đặt tên: __
-- Ai duyệt thay đổi do agent tạo trước khi commit: __
+- Nội dung người dùng thấy viết bằng tiếng Việt. Tên trường và enum dùng theo contract.
+- Chủ file kiểm tra thay đổi thuộc phần mình. Thể kiểm tra contract, smoke test và merge vào `main`.

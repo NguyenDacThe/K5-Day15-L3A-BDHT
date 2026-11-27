@@ -51,6 +51,7 @@
       <section class="card form-card" aria-labelledby="form-title">
         <div class="card-heading"><span class="section-number" aria-hidden="true">01</span><div><h2 id="form-title">Thông tin khiếu nại</h2><p>Chọn một mẫu hoặc mô tả sự cố của bạn.</p></div></div>
         <form id="complaint-form" novalidate>
+          <div class="form-fields">
           <fieldset class="samples-fieldset">
             <legend>Điền nhanh tình huống</legend>
             <div class="sample-grid">
@@ -62,6 +63,7 @@
             <p class="field-hint fixture-note">Mẫu chỉ điền form. Dữ liệu đơn đang chờ tích hợp.</p>
           </fieldset>
 
+          <div class="field-pair">
           <div class="field">
             <label for="order-id">Mã đơn hàng <span class="optional">Không bắt buộc</span></label>
             <select id="order-id" name="order_id" aria-describedby="order-hint">
@@ -73,16 +75,18 @@
             <p id="order-hint" class="field-hint">Bạn vẫn có thể tiếp tục nếu chưa có mã đơn.</p>
           </div>
           <div class="field">
+            <label for="requested-amount">Số tiền yêu cầu <span class="optional">Không bắt buộc</span></label>
+            <div class="amount-input"><input id="requested-amount" name="requested_amount_vnd" type="text" inputmode="numeric" autocomplete="off" placeholder="Để trống nếu chưa có yêu cầu" aria-describedby="amount-hint amount-error"><span aria-hidden="true">VND</span></div>
+            <p id="amount-hint" class="field-hint">Số nguyên không âm hoặc để trống.</p>
+            <p id="amount-error" class="field-error" hidden></p>
+          </div>
+          </div>
+          <div class="field">
             <label for="message">Nội dung khiếu nại <span class="required" aria-hidden="true">*</span></label>
             <textarea id="message" name="message" rows="3" maxlength="500" required placeholder="Ví dụ: Đơn hàng của tôi bị thiếu một phần khoai chiên…" aria-describedby="message-hint character-count message-error"></textarea>
             <div class="field-bottom"><span id="message-hint" class="field-hint">Dùng tình huống giả lập, không nhập thông tin cá nhân.</span><span id="character-count" class="character-count" data-level="normal">0 / 500</span></div>
             <p id="message-error" class="field-error" hidden></p>
           </div>
-          <div class="field">
-            <label for="requested-amount">Số tiền yêu cầu <span class="optional">Không bắt buộc</span></label>
-            <div class="amount-input"><input id="requested-amount" name="requested_amount_vnd" type="text" inputmode="numeric" autocomplete="off" placeholder="Để trống nếu chưa có yêu cầu" aria-describedby="amount-hint amount-error"><span aria-hidden="true">VND</span></div>
-            <p id="amount-hint" class="field-hint">Số nguyên không âm. Bỏ trống nếu chưa có yêu cầu.</p>
-            <p id="amount-error" class="field-error" hidden></p>
           </div>
           <div class="form-actions"><button id="submit-button" class="button-primary" type="submit"><span id="submit-label">Kiểm tra phương án</span><span id="submit-symbol" aria-hidden="true"><svg class="icon"><use href="#icon-arrow"/></svg></span></button><button id="reset-button" class="button-reset" type="reset"><svg class="icon" aria-hidden="true"><use href="#icon-refresh"/></svg>Làm mới</button></div>
         </form>

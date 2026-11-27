@@ -236,4 +236,69 @@ details[open] summary::after { content: "−"; }
   .result-facts > div, .technical-details dl > div { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 10px; font-size: 12px; }
   .site-footer { flex-direction: column; gap: 4px; }
 }
+/* Desktop shell fits the visible screen; lengthy form/results scroll locally. */
+@media (min-width: 1024px) {
+  body { height: 100vh; height: 100dvh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+  .header-inner { min-height: 56px; }
+  .brand { font-size: 18px; gap: 10px; }
+  .brand-mark { padding: 7px; border-radius: 9px; }
+  .brand-mark .icon { width: 22px; height: 22px; }
+  .brand-sub { margin-top: 2px; }
+  .page-shell { display: grid; grid-template-rows: auto auto minmax(0, 1fr); min-height: 0; gap: 12px; padding-block: 12px; }
+  .intro { padding: 0; }
+  .intro .eyebrow { display: none; }
+  h1 { font-size: 28px; margin: 0 0 4px; }
+  .intro-copy { font-size: 14px; }
+  .demo-notice { padding: 8px 12px; }
+  .workspace { min-height: 0; margin: 0; gap: 20px; align-items: stretch; grid-template-rows: minmax(0, 1fr); }
+  .card { min-height: 0; height: 100%; }
+  .form-card { display: flex; flex-direction: column; padding: 16px; }
+  .card-heading { flex: 0 0 auto; gap: 10px; }
+  h2 { font-size: 18px; }
+  .card-heading p { margin-top: 2px; font-size: 12px; }
+  .section-number { min-width: 28px; height: 28px; }
+  #complaint-form { display: flex; flex-direction: column; flex: 1; min-height: 0; margin-top: 12px; }
+  .form-fields { flex: 1; min-height: 0; overflow: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; padding: 4px 6px 8px 4px; margin: -4px -6px 0 -4px; }
+  .samples-fieldset { margin-top: 0; padding-bottom: 12px; }
+  legend { margin-bottom: 8px; }
+  .sample-button { min-height: 54px; padding: 8px 10px; gap: 8px; }
+  .sample-icon { width: 24px; }
+  .sample-button small { margin-top: 2px; }
+  .fixture-note { margin-top: 6px; }
+  .field-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+  .field { margin-top: 12px; }
+  .field-pair label { margin-bottom: 6px; }
+  .field-pair .field-hint { line-height: 1.4; }
+  textarea { min-height: 80px; height: 88px; max-height: 180px; }
+  .form-actions { flex: 0 0 auto; margin-top: 0; padding-top: 12px; border-top: 1px solid var(--border); }
+  .result-card { position: static; display: flex; flex-direction: column; }
+  .result-card > .card-heading { padding: 16px; }
+  .result-card .badge { margin-left: auto; margin-top: 0; }
+  .request-summary { flex: 0 0 auto; padding: 8px 16px; }
+  #request-message { max-height: 3.2em; }
+  .empty-state, .loading-state, .error-state, .result-content { flex: 1; min-height: 0; overflow: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; padding: 16px; }
+  .result-content > * { flex-shrink: 0; }
+  .receipt-art { height: 88px; width: 120px; margin-bottom: 12px; }
+  .process-overview { margin-top: 16px; padding-top: 12px; }
+  .process-overview ol { gap: 8px; margin-top: 8px; }
+  .result-footnote { flex: 0 0 auto; padding: 10px 16px; }
+  .proposal, .reply-section, .availability-notice { margin-top: 12px; }
+  .proposal { padding: 12px 16px; }
+  .proposal strong { font-size: 36px; line-height: 1.3; }
+  .reply-section p { font-size: 14px; line-height: 1.6; }
+  .result-facts { margin-top: 12px; padding-top: 4px; }
+  .result-facts > div { padding-block: 6px; }
+  .processing-row { margin-top: 4px; padding-top: 10px !important; }
+  .technical-details { margin-top: 8px; padding-top: 4px; }
+  .site-footer { padding-block: 6px; font-size: 11px; }
+}
+@media (min-width: 1024px) and (max-height: 820px) {
+  .card-heading p { display: none; }
+  .sample-button { padding-block: 6px; min-height: 50px; }
+  textarea { height: 76px; min-height: 72px; }
+}
+@media (min-width: 1024px) and (max-height: 780px) {
+  .intro-copy { display: none; }
+  .page-shell { padding-block: 10px; }
+}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

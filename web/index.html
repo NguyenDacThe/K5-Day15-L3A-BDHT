@@ -45,10 +45,13 @@
       <section class="card form-card" aria-labelledby="form-title">
         <h2 id="form-title">Thông tin khiếu nại</h2>
         <form id="complaint-form" novalidate>
+          <div class="form-fields">
           <div class="field-pair">
             <div class="field">
-              <label for="order-id">Mã đơn hàng</label>
-              <input id="order-id" name="order_id" type="text" autocomplete="off" spellcheck="false" placeholder="Nhập mã đơn hàng">
+              <label for="order-id">Chọn đơn hàng mẫu</label>
+              <select id="order-id" name="order_id" aria-describedby="orders-status" disabled>
+                <option value="">Đang tải danh sách đơn…</option>
+              </select>
             </div>
             <div class="field">
               <label for="requested-amount">Số tiền yêu cầu <span class="optional">Không bắt buộc</span></label>
@@ -59,6 +62,27 @@
               <p id="amount-error" class="field-error" hidden></p>
             </div>
           </div>
+          <div class="orders-status-row">
+            <p id="orders-status" class="field-hint" role="status" aria-live="polite">Đang tải đơn hàng giả lập.</p>
+            <button id="reload-orders" class="text-button" type="button" hidden>Tải lại danh sách đơn</button>
+          </div>
+          <section id="order-details" class="order-details" aria-labelledby="order-details-title" hidden>
+            <div class="order-details-heading">
+              <h3 id="order-details-title">Chi tiết đơn hàng</h3>
+              <span class="order-demo-label">Đơn giả lập</span>
+            </div>
+            <div class="order-total"><span>Tổng đã thanh toán</span><strong id="order-total"></strong></div>
+            <dl class="order-times">
+              <div><dt>Hẹn giao</dt><dd id="order-promised"></dd></div>
+              <div><dt>Giao thực tế</dt><dd id="order-delivered"></dd></div>
+            </dl>
+            <table class="order-items">
+              <caption class="sr-only">Các món trong đơn hàng được chọn</caption>
+              <thead><tr><th scope="col">Món ăn</th><th scope="col">SL</th><th scope="col">Đơn giá</th></tr></thead>
+              <tbody id="order-items"></tbody>
+            </table>
+            <p class="order-details-note">Dữ kiện xác minh trong đơn giả lập, chưa phải phương án xử lý.</p>
+          </section>
 
           <div class="field message-field">
             <label for="message">Nội dung khiếu nại <span class="required" aria-hidden="true">*</span></label>
@@ -68,6 +92,7 @@
               <span id="character-count" class="character-count" data-level="normal">0 / 500</span>
             </div>
             <p id="message-error" class="field-error" hidden></p>
+          </div>
           </div>
 
           <div class="form-actions">

@@ -44,7 +44,7 @@ Mở `http://127.0.0.1:8000/api/health` để kiểm tra ứng dụng và `http:
 
 ## Bản chạy thử — viết ở đâu
 
-Ở mốc khởi tạo, API và CLI cùng gọi `handle_complaint(request)` trong [service.py](src/d1/service.py). Hùng nối `decide(request, classify)` cho phần đối chiếu quy tắc. Thể cung cấp bộ phân loại trả về `TriageResult`. [Schema Python](src/d1/contracts.py)
+API và CLI cùng gọi `handle_complaint(request)` trong [service.py](src/d1/service.py). Service chuyển kết quả phân loại thử nghiệm vào `decide(request, classify)` để đối chiếu đơn mẫu và quy tắc. [Schema Python](src/d1/contracts.py)
 
 **Request mẫu cho `POST /api/complaints`**
 
@@ -54,7 +54,7 @@ Mở `http://127.0.0.1:8000/api/health` để kiểm tra ứng dụng và `http:
 
 `message` dài 1–500 ký tự sau khi bỏ khoảng trắng đầu cuối. `order_id` và `requested_amount_vnd` có thể bỏ trống hoặc gửi `null`. Số tiền nhập phải là số nguyên VND từ 0 trở lên. API trả HTTP 422 cho body sai và HTTP 200 cho quyết định nghiệp vụ.
 
-**Response đích sau khi tích hợp fixture, rules và model**
+**Response mẫu với fixture `demo-1`**
 
 ```json
 {
@@ -63,12 +63,12 @@ Mở `http://127.0.0.1:8000/api/health` để kiểm tra ứng dụng và `http:
   "proposed_amount_vnd": 35000,
   "reason_code": "ITEM_ELIGIBLE",
   "policy_ref": {"rule_id":"D1-MISSING","version":"demo-1","kind":"demo"},
-  "reply": "Mức đề xuất hoàn cho phần khoai là 35.000đ.",
-  "meta": {"mode":"live","ai_used":true}
+  "reply": "Đề xuất hoàn 35.000đ cho phần món bị ảnh hưởng.",
+  "meta": {"mode":"mock","ai_used":false}
 }
 ```
 
-Bản khung hiện trả `ASK_INFO` khi thiếu mã đơn hoặc `ESCALATE / RULES_UNAVAILABLE` khi có mã đơn. Đông có thể dùng response đích để dựng màn kết quả.
+Hệ thống hỏi mã đơn qua `ASK_INFO` khi khách chưa cung cấp. Khi thiếu fixture hoặc quy tắc cần thiết, hệ thống trả `ESCALATE / RULES_UNAVAILABLE`.
 
 ## Phần nào thật, phần nào giả
 

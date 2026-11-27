@@ -1,9 +1,11 @@
 import unittest
+from unittest.mock import patch
 
 from src.d1.contracts import ComplaintRequest, Decision, IssueType
 from src.d1.service import complaint_response
 
 
+@patch.dict("os.environ", {"AI_MODE": "mock"})
 class ComplaintServiceTest(unittest.TestCase):
     def test_missing_item_uses_team_fixture_and_rules(self):
         request = ComplaintRequest(order_id="D1-001", message="Đơn của mình bị thiếu khoai tây chiên.")

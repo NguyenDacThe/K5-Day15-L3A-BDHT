@@ -25,7 +25,7 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--page); color: var(--ink); }
+body { margin: 0; background: linear-gradient(180deg, #fffaf6 0%, var(--page) 220px); color: var(--ink); min-height: 100vh; }
 button, input, textarea { font: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
@@ -67,11 +67,22 @@ h1, h2, h3, p { margin: 0; }
 .brand { display: inline-flex; align-items: center; gap: 11px; color: var(--ink); text-decoration: none; font-size: 19px; font-weight: 750; line-height: 1.15; }
 .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; background: var(--accent); color: white; }
 .brand-sub { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 500; }
+.header-meta { display: inline-flex; align-items: center; gap: 10px; }
+.demo-pill { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); border: 1px solid #f5d0b5; color: var(--accent); font-size: 12px; font-weight: 650; }
 .header-caption { color: var(--muted); font-size: 14px; text-align: right; }
 
 .page-shell { padding-bottom: 64px; }
 .intro { padding: 24px 0 20px; }
 h1 { font-size: clamp(28px, 4vw, 34px); letter-spacing: -.045em; line-height: 1.14; font-weight: 750; }
+.intro-sub { margin-top: 8px; color: var(--muted); font-size: 15px; max-width: 70ch; }
+.intro-sub code, .empty-steps code { padding: 1px 6px; border-radius: 5px; background: #eef2f6; color: var(--ink); font-size: 0.9em; }
+
+.order-preview { margin: 0 0 16px; padding: 12px 14px; border: 1px solid #f2d9c7; border-radius: 11px; background: #fff9f4; font-size: 13px; }
+.order-preview-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+.order-preview-head strong { color: var(--accent); font-size: 13.5px; }
+.order-preview-total { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+.order-preview-items { color: var(--ink); line-height: 1.45; }
+.order-preview-time { margin-top: 3px; color: var(--muted); font-size: 12.5px; }
 
 .workspace { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); gap: 22px; align-items: stretch; }
 .card { min-width: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
@@ -179,6 +190,14 @@ input:disabled, textarea:disabled { background: var(--page); }
 .status-badge { display: inline-flex; padding: 4px 9px; border-radius: 6px; color: var(--muted); background: #f1f5f9; font-size: 12px; font-weight: 650; }
 .result-card[data-state="loading"] .status-badge { color: var(--info); background: var(--info-soft); }
 .result-card[data-state="success"] .status-badge { color: var(--positive); background: var(--positive-soft); }
+.result-card[data-state="success"][data-tone="warning"] .status-badge { color: var(--warning); background: var(--warning-soft); }
+.result-card[data-state="success"][data-tone="danger"] .status-badge { color: var(--danger); background: var(--danger-soft); }
+.result-card[data-state="success"][data-tone="information"] .status-badge { color: var(--info); background: var(--info-soft); }
+.result-card[data-state="success"][data-tone="neutral"] .status-badge { color: var(--muted); background: #eef2f6; }
+
+.empty-steps { list-style: none; margin: 14px 0 0; padding: 14px 16px; width: 100%; max-width: 360px; border-radius: 12px; background: var(--page); border: 1px solid var(--line); text-align: left; display: grid; gap: 9px; font-size: 13px; color: var(--ink); }
+.empty-steps li { display: flex; align-items: center; gap: 10px; }
+.empty-steps li span { display: inline-grid; place-items: center; flex: none; width: 22px; height: 22px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 700; }
 
 .result-state { flex: 1; display: grid; align-content: center; justify-items: center; gap: 10px; min-height: 288px; padding: 28px; text-align: center; }
 .result-state h3 { font-size: 17px; font-weight: 690; }

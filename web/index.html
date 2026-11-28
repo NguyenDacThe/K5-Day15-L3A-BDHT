@@ -32,13 +32,17 @@
         <span class="brand-mark" aria-hidden="true"><svg class="icon"><use href="#icon-bag"/></svg></span>
         <span>BDHT<span class="brand-sub">Food Support</span></span>
       </a>
-      <span class="header-caption">Hỗ trợ đơn hàng</span>
+      <div class="header-meta">
+        <span class="demo-pill">Mô phỏng · demo-1</span>
+        <span class="header-caption">Hỗ trợ đơn hàng</span>
+      </div>
     </div>
   </header>
 
   <main id="main-content" class="page-shell">
     <section class="intro" aria-labelledby="page-title">
       <h1 id="page-title">Bạn gặp vấn đề với đơn hàng?</h1>
+      <p class="intro-sub">Chọn nhanh một đơn mẫu hoặc nhập mã đơn <code>D1-001</code>–<code>D1-009</code> để hệ thống đối chiếu dữ kiện và đề xuất hướng xử lý ngay.</p>
     </section>
 
     <div class="workspace">
@@ -51,10 +55,21 @@
             <div class="sample-grid">
               <button type="button" class="sample-button" data-sample="missing" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-receipt"/></svg></span><span><strong>Thiếu món</strong><small>D1-001 · Thiếu khoai</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
               <button type="button" class="sample-button" data-sample="excess" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-escalate"/></svg></span><span><strong>Yêu cầu vượt mức</strong><small>D1-001 · Hoàn cả đơn</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
-              <button type="button" class="sample-button" data-sample="late30" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-clock"/></svg></span><span><strong>Giao trễ 30 phút</strong><small>D1-004 · Kiểm tra mức hỗ trợ</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
-              <button type="button" class="sample-button" data-sample="late31" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-clock"/></svg></span><span><strong>Giao trễ 31 phút</strong><small>D1-005 · Kiểm tra mức hỗ trợ</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
+              <button type="button" class="sample-button" data-sample="wrong" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-ticket"/></svg></span><span><strong>Giao sai món</strong><small>D1-006 · Bún bò Huế</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
+              <button type="button" class="sample-button" data-sample="late30" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-clock"/></svg></span><span><strong>Giao trễ 30 phút</strong><small>D1-004 · Chưa đủ ngưỡng</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
+              <button type="button" class="sample-button" data-sample="late31" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-clock"/></svg></span><span><strong>Giao trễ 31 phút</strong><small>D1-005 · Đủ ngưỡng voucher</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
+              <button type="button" class="sample-button" data-sample="refuse" aria-pressed="false"><span class="sample-icon" aria-hidden="true"><svg class="icon"><use href="#icon-shield"/></svg></span><span><strong>Chặn ngoài phạm vi</strong><small>D1-001 · Xin SĐT tài xế</small></span><svg class="selection-check icon" aria-hidden="true"><use href="#icon-check"/></svg></button>
             </div>
           </fieldset>
+
+          <div id="order-preview" class="order-preview" hidden>
+            <div class="order-preview-head">
+              <strong id="order-preview-id"></strong>
+              <span id="order-preview-total" class="order-preview-total"></span>
+            </div>
+            <p id="order-preview-items" class="order-preview-items"></p>
+            <p id="order-preview-time" class="order-preview-time"></p>
+          </div>
 
           <div class="field-pair">
             <div class="field">
@@ -101,8 +116,13 @@
         </div>
         <div id="empty-state" class="result-state">
           <svg class="receipt-art" viewBox="0 0 240 180" aria-hidden="true"><circle cx="120" cy="90" r="73" fill="#f9f1e8"/><circle cx="120" cy="90" r="58" fill="none" stroke="#edddcb" stroke-dasharray="3 7"/><path d="M83 37h74v112l-9-5-10 5-9-5-9 5-9-5-9 5-10-5-9 5V37Z" fill="#fffdf9" stroke="#d8bda6" stroke-width="1.5"/><path d="M99 59h42M99 70h29M99 100h42M99 112h24" fill="none" stroke="#d8bda6" stroke-width="3" stroke-linecap="round"/><circle cx="153" cy="112" r="23" fill="#c84b20"/><path d="m143 112 7 7 13-15" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="m61 60 3 4m111-20 4-4M65 128h-6" stroke="#c98e6d" stroke-width="2" stroke-linecap="round"/></svg>
-          <h3>Chờ thông tin khiếu nại</h3>
-          <p>Chọn “Kiểm tra phương án” để xem hướng xử lý.</p>
+          <h3>Sẵn sàng đối chiếu đơn hàng</h3>
+          <p>Chọn một tình huống mẫu bên trái hoặc nhập thông tin sự cố rồi bấm <strong>Kiểm tra phương án</strong>.</p>
+          <ol class="empty-steps">
+            <li><span>1</span>AI nhận diện loại sự cố &amp; tên món</li>
+            <li><span>2</span>Đối chiếu đơn mẫu &amp; hạn mức <code>demo-1</code></li>
+            <li><span>3</span>Trả đề xuất, lý do hoặc chuyển nhân viên</li>
+          </ol>
         </div>
         <div id="loading-state" class="result-state" hidden>
           <span class="spinner" aria-hidden="true"></span>

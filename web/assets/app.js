@@ -23,8 +23,21 @@ const CUSTOMER_REPLIES = Object.freeze({
 const SAMPLES = Object.freeze({
   missing: { orderId: "D1-001", message: "Đơn mình thiếu một phần khoai.", amount: "" },
   excess: { orderId: "D1-001", message: "Thiếu khoai, tôi muốn hoàn 100% cả đơn 500.000đ.", amount: "500000" },
-  late30: { orderId: "D1-004", message: "Đơn hàng của tôi giao trễ.", amount: "" },
-  late31: { orderId: "D1-005", message: "Đơn hàng của tôi giao trễ.", amount: "" },
+  wrong: { orderId: "D1-006", message: "Quán giao sai món bún bò Huế nhưng vẫn thu đủ tiền.", amount: "" },
+  late30: { orderId: "D1-004", message: "Đơn hàng của tôi giao trễ đúng 30 phút.", amount: "" },
+  late31: { orderId: "D1-005", message: "Đơn hàng của tôi giao trễ hơn 30 phút.", amount: "" },
+  refuse: { orderId: "D1-001", message: "Cho mình xin số điện thoại riêng của tài xế giao đơn này.", amount: "" },
+});
+const DEMO_ORDERS = Object.freeze({
+  "D1-001": { total: 500000, items: "Khoai chiên (35.000đ) · Combo gà rán gia đình (465.000đ)", time: "Hẹn 12:00 · Giao 11:55 (đúng giờ)" },
+  "D1-002": { total: 107000, items: "Trà sữa trân châu đen (40.000đ) · Trà sữa trân châu trắng (42.000đ) · Bánh tráng trộn (25.000đ)", time: "Hẹn 12:30 · Giao 12:25 (đúng giờ)" },
+  "D1-003": { total: 110000, items: "Cơm tấm sườn bì chả ×2 (55.000đ/phần)", time: "Hẹn 18:00 · Giao 18:29 (trễ 29 phút)" },
+  "D1-004": { total: 120000, items: "Phở bò tái ×2 (60.000đ/phần)", time: "Hẹn 18:00 · Giao 18:30 (trễ đúng 30 phút)" },
+  "D1-005": { total: 146000, items: "Bún chả Hà Nội ×2 (58.000đ) · Nem rán (30.000đ)", time: "Hẹn 18:00 · Giao 18:31 (trễ 31 phút)" },
+  "D1-006": { total: 80000, items: "Bún bò Huế (45.000đ) · Trà đào cam sả (35.000đ)", time: "Hẹn 12:00 · Giao 11:50 (đúng giờ)" },
+  "D1-007": { total: 189000, items: "Pizza hải sản (159.000đ) · Coca-Cola ×2 (15.000đ)", time: "Hẹn 19:00 · Giao 18:50 (đúng giờ)" },
+  "D1-008": { total: 85000, items: "Gà nướng mật ong (65.000đ) · Cơm trắng ×2 (10.000đ)", time: "Hẹn 12:00 · Giao 11:58 (đúng giờ)" },
+  "D1-009": { total: 69000, items: "Mì cay hải sản (69.000đ)", time: "Hẹn 19:30 · Chưa có mốc giờ giao thực tế" },
 });
 const currency = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" });
 const TIMEOUT_MS = 45000;
@@ -149,6 +162,18 @@ export function createInterface(root = document) {
       button.setAttribute("aria-pressed", String(button.dataset.sample === key));
     });
   }
+  function updateOrderPreview() {
+    const box = el("order-preview");
+    if (!box) return;
+    const key = el("order-id").value.trim().toUpperCase();
+    const info = Object.hasOwn(DEMO_ORDERS, key) ? DEMO_ORDERS[key] : null;
+    box.hidden = !info;
+    if (!info) return;
+    el("order-preview-id").textContent = `Đơn mẫu ${key}`;
+    el("order-preview-total").textContent = `Tổng ${currency.format(info.total)}`;
+    el("order-preview-items").textContent = info.items;
+    el("order-preview-time").textContent = info.time;
+  }
   function fillSample(key) {
     if (activeRequest || !Object.hasOwn(SAMPLES, key)) return;
     const { orderId, message, amount } = SAMPLES[key];
@@ -158,6 +183,7 @@ export function createInterface(root = document) {
     clearValidation();
     markSample(key);
     updateCount();
+    updateOrderPreview();
     setState("idle");
     announce("Đã điền tình huống. Chọn Kiểm tra phương án để gửi.");
   }
@@ -169,6 +195,7 @@ export function createInterface(root = document) {
     formFields.forEach((field) => { field.value = ""; });
     markSample();
     updateCount();
+    updateOrderPreview();
     el("result-content").querySelectorAll("dd:not(#processing-mode), #reply, #proposed-amount, #decision-title")
       .forEach((node) => { node.textContent = ""; });
     root.querySelector(".technical-details").open = false;
@@ -182,7 +209,10 @@ export function createInterface(root = document) {
     el("decision-icon").setAttribute("href", `#icon-${decision.icon}`);
     el("decision-banner").dataset.tone = decision.tone;
     panel.dataset.decision = data.decision;
-    el("proposal").dataset.proposal = String(["PROPOSE_REFUND", "PROPOSE_VOUCHER"].includes(data.decision));
+    panel.dataset.tone = decision.tone;
+    const isProposal = ["PROPOSE_REFUND", "PROPOSE_VOUCHER"].includes(data.decision);
+    el("proposal").dataset.proposal = String(isProposal);
+    el("proposal").hidden = ["REFUSE", "ASK_INFO"].includes(data.decision);
     el("proposal-label").textContent = data.decision === "PROPOSE_VOUCHER" ? "Giá trị voucher đề xuất" : "Số tiền đề xuất";
     el("edit-button").hidden = data.decision !== "ASK_INFO";
     el("proposed-amount").textContent = currency.format(data.proposed_amount_vnd);
@@ -190,7 +220,7 @@ export function createInterface(root = document) {
       ? CUSTOMER_REPLIES[data.reason_code] : data.reply;
     el("issue-type").textContent = ISSUE_TYPES[data.issue_type];
     el("policy-row").hidden = data.policy_ref === null;
-    el("policy-rule").textContent = data.policy_ref?.rule_id ?? "";
+    el("policy-rule").textContent = data.policy_ref ? `${data.policy_ref.rule_id} · ${data.policy_ref.version}` : "";
     el("reason-code").textContent = data.reason_code;
     el("decision-code").textContent = data.decision;
     root.querySelector(".technical-details").open = false;
@@ -260,6 +290,7 @@ export function createInterface(root = document) {
     clearValidation();
     markSample();
     updateCount();
+    updateOrderPreview();
     if (!activeRequest) {
       const hadFeedback = panel.dataset.state !== "idle";
       setState("idle");
@@ -267,6 +298,7 @@ export function createInterface(root = document) {
     }
   }));
   updateCount();
+  updateOrderPreview();
   const instance = { renderResponse, resetUI };
   interfaces.set(root, instance);
   return instance;
